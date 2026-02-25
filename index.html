@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Long Arm Quilting Order Form</title>
+  <style>
+    :root { --max: 920px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#fafafa; color:#111; }
+    header { padding: 28px 16px; background:#111; color:#fff; }
+    header .wrap { max-width: var(--max); margin: 0 auto; }
+    h1 { margin: 0 0 6px 0; font-size: 22px; font-weight: 700; }
+    p.sub { margin: 0; opacity: .85; }
+    main { padding: 18px 16px 40px; }
+    .wrap { max-width: var(--max); margin: 0 auto; }
+    form { background:#fff; border:1px solid #e8e8e8; border-radius: 14px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 780px){ .grid, .grid3 { grid-template-columns: 1fr; } }
+    fieldset { border: 0; padding: 0; margin: 0 0 16px 0; }
+    legend { font-weight: 700; margin: 10px 0 10px; }
+    label { display:block; font-size: 13px; margin: 0 0 6px; font-weight: 600; }
+    input, select, textarea {
+      width: 100%; box-sizing: border-box;
+      padding: 10px 12px; border-radius: 10px;
+      border: 1px solid #d8d8d8; background:#fff; outline: none;
+      font-size: 14px;
+    }
+    textarea { min-height: 92px; resize: vertical; }
+    .help { font-size: 12px; color:#444; margin-top: 6px; }
+    .req { color:#b00020; margin-left: 2px; }
+    .row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
+    .chips { display:flex; gap: 10px; flex-wrap: wrap; }
+    .chip { border:1px solid #d8d8d8; padding: 10px 12px; border-radius: 12px; flex: 1 1 260px; }
+    .chip input { width: auto; }
+    .chip label { display:inline; font-weight: 600; margin: 0; }
+    .summary {
+      margin-top: 16px;
+      border-top: 1px dashed #ddd;
+      padding-top: 14px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+    }
+    @media (max-width: 780px){ .summary { grid-template-columns: 1fr; } }
+    .card { border:1px solid #ececec; border-radius: 14px; padding: 14px; background:#fcfcfc; }
+    .money { font-variant-numeric: tabular-nums; }
+    .btns { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    button {
+      border: 0; padding: 11px 14px; border-radius: 12px;
+      font-weight: 700; cursor: pointer;
+    }
+    button.primary { background:#111; color:#fff; }
+    button.secondary { background:#efefef; color:#111; }
+    .small { font-size: 12px; color:#555; }
+    .warn { color:#8a2d00; background:#fff3e8; border:1px solid #ffd7bf; padding: 10px 12px; border-radius: 12px; }
+    .ok { color:#0f5132; background:#e9f7ef; border:1px solid #c9efd8; padding: 10px 12px; border-radius: 12px; }
+    .line { display:flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid #eee; }
+    .line:last-child { border-bottom: none; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Long Arm Quilting Order Form</h1>
+      <p class="sub">Fill out details below. The estimate updates automatically.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <form id="orderForm">
+        <fieldset>
+          <legend>Customer & Dates</legend>
+          <div class="grid3">
+            <div>
+              <label for="dateOrdered">Date Ordered<span class="req">*</span></label>
+              <input id="dateOrdered" name="dateOrdered" type="date" required />
+            </div>
+            <div>
+              <label for="requestedDate">Requested Completion Date<span class="req">*</span></label>
+              <input id="requestedDate" name="requestedDate" type="date" required />
+            </div>
+            <div>
+              <label for="customerName">Customer Name<span class="req">*</span></label>
+              <input id="customerName" name="customerName" type="text" required />
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <label for="phone">Phone Number<span class="req">*</span></label>
+              <input id="phone" name="phone" type="tel" required />
+            </div>
+            <div>
+              <label for="email">Email<span class="req">*</span></label>
+              <input id="email" name="email" type="email" required />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quilt Top Dimensions</legend>
+          <div class="grid3">
+            <div>
+              <label for="width">Width of Quilt Top (inches)<span class="req">*</span></label>
+              <input id="width" name="width" type="number" step="0.01" min="1" required />
+            </div>
+            <div>
+              <label for="length">Length of Quilt Top (inches)<span class="req">*</span></label>
+              <input id="length" name="length" type="number" step="0.01" min="1" required />
+            </div>
+            <div>
+              <label for="pattern">Pattern<span class="req">*</span></label>
+              <input id="pattern" name="pattern" type="text" placeholder="e.g., Stars / Patchwork / etc." required />
+            </div>
+          </div>
+          <div class="help">Area is calculated as width × length (square inches).</div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quilting Design</legend>
+
+          <div class="grid">
+            <div class="card">
+              <label for="e2e">Quilting Design — Edge to Edge<span class="req">*</span></label>
+              <select id="e2e" name="e2e" required>
+                <option value="none" data-rate="0">None ($0)</option>
+                <option value="regular" data-rate="0.02">Regular Stitch Density ($0.02/sq in)</option>
+                <option value="complex" data-rate="0.03">Complex Stitch Density ($0.03/sq in)</option>
+              </select>
+              <div class="help">If you choose E2E, pricing uses square inches × rate.</div>
+            </div>
+
+            <div class="card">
+              <label for="custom">Quilting Design — Custom<span class="req">*</span></label>
+              <select id="custom" name="custom" required>
+                <option value="none">None</option>
+                <option value="regular">Regular</option>
+                <option value="moderate">Moderate</option>
+                <option value="heavy">Heavy</option>
+              </select>
+              <div class="help">Custom quilting is shown as “TBD” here (you can later add your own pricing).</div>
+            </div>
+          </div>
+
+          <div id="designNote" class="warn" style="display:none; margin-top:12px;">
+            You selected both an Edge-to-Edge option and a Custom option. Usually you’d choose one. The estimate will include only Edge-to-Edge pricing unless you add custom pricing rules.
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Materials</legend>
+
+          <div class="grid">
+            <div class="card">
+              <label for="batting">Batting Type<span class="req">*</span></label>
+              <select id="batting" name="batting" required>
+                <option value="customer" data-peryard="0">Customer Supplied ($0)</option>
+                <option value="poly" data-peryard="8">Poly ($8/yard)</option>
+                <option value="8020" data-peryard="9">80/20 ($9/yard)</option>
+                <option value="wool" data-peryard="10">Wool ($10/yard)</option>
+                <option value="bamboo" data-peryard="11">Bamboo ($11/yard)</option>
+              </select>
+              <div class="help">Batting cost uses “Yards of Backing” as the yard count unless you change it.</div>
+            </div>
+
+            <div class="card">
+              <label for="thread">Thread<span class="req">*</span></label>
+              <select id="thread" name="thread" required>
+                <option value="regular" data-fee="0">Regular</option>
+                <option value="specialty" data-fee="0">Specialty</option>
+              </select>
+              <div class="help">No thread fee is applied (add one if you want).</div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <label for="backingSupplied">B&N Supplied Backing Fabric<span class="req">*</span></label>
+              <select id="backingSupplied" name="backingSupplied" required>
+                <option value="no" data-peryard="0">No ($0)</option>
+                <option value="regular" data-peryard="10">Regular Price ($10/yd)</option>
+                <option value="friend" data-peryard="7">Friend's Discount ($7/yd)</option>
+              </select>
+              <div class="help">Backing cost uses yards entered below × rate.</div>
+            </div>
+
+            <div class="card">
+              <label for="backingYards">Yards of Backing<span class="req">*</span></label>
+              <input id="backingYards" name="backingYards" type="number" step="0.1" min="0" required />
+              <div class="help">Used for backing and batting calculations.</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Label & Stitching</legend>
+          <div class="grid">
+            <div class="card">
+              <label for="label">Embroidered Quilt Label<span class="req">*</span></label>
+              <select id="label" name="label" required>
+                <option value="none" data-fee="0">None</option>
+                <option value="other" data-fee="0">Other (describe below)</option>
+              </select>
+              <div class="help">If you charge for labels, you can add a fee in the code.</div>
+            </div>
+            <div class="card">
+              <label for="minutes">Minutes for Stitching<span class="req">*</span></label>
+              <input id="minutes" name="minutes" type="number" step="1" min="0" required />
+              <div class="help">Optional for estimates; currently not priced.</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <label for="labelNotes">Label / Other Notes</label>
+            <textarea id="labelNotes" name="labelNotes" placeholder="If you chose 'Other', describe what you want here."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Other Charges<span class="req">*</span></legend>
+          <div class="chips">
+            <div class="chip">
+              <input type="checkbox" id="repairs" name="charges" value="repairs" data-fee="10" />
+              <label for="repairs">Repairs ($10)</label>
+            </div>
+            <div class="chip">
+              <input type="checkbox" id="ironing" name="charges" value="ironing" data-fee="10" />
+              <label for="ironing">Ironing ($10)</label>
+            </div>
+            <div class="chip">
+              <input type="checkbox" id="trimming" name="charges" value="trimming" data-fee="10" />
+              <label for="trimming">Trimming Quilt ($10)</label>
+            </div>
+          </div>
+          <div class="help">These add-ons are added to the estimate as flat fees.</div>
+        </fieldset>
+
+        <div class="summary">
+          <div class="card">
+            <div class="line"><div>Square inches</div><div class="mono" id="sqIn">—</div></div>
+            <div class="line"><div>E2E quilting</div><div class="money" id="e2eCost">$0.00</div></div>
+            <div class="line"><div>Custom quilting</div><div class="money" id="customCost">TBD</div></div>
+            <div class="line"><div>Backing</div><div class="money" id="backingCost">$0.00</div></div>
+            <div class="line"><div>Batting</div><div class="money" id="battingCost">$0.00</div></div>
+            <div class="line"><div>Add-ons</div><div class="money" id="addonsCost">$0.00</div></div>
+            <div class="line"><div><strong>Estimated total</strong></div><div class="money" id="totalCost"><strong>$0.00</strong></div></div>
+            <div class="small" style="margin-top:10px;">
+              Note: “Custom quilting” is marked TBD unless you add a pricing rule for it.
+            </div>
+          </div>
+
+          <div class="card">
+            <div id="statusBox" class="ok" style="display:none;"></div>
+            <div class="btns">
+              <button type="button" class="primary" id="downloadBtn">Download Order (TXT)</button>
+              <button type="reset" class="secondary">Reset</button>
+            </div>
+            <div class="small" style="margin-top:10px;">
+              The download button saves your order details to a text file you can email or store.
+              If you want true online submissions, connect Formspree/Netlify Forms later.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // ---------- Pricing rules (edit these if you want) ----------
+    // Edge-to-Edge cost = area_sq_in * rate (rate comes from dropdown data-rate)
+    // Backing cost = backing_yards * backing_rate
+    // Batting cost = backing_yards * batting_per_yard (simple assumption)
+    // Add-ons are flat fees from checkboxes.
+
+    const $ = (id) => document.getElementById(id);
+
+    const form = $("orderForm");
+    const inputsToWatch = [
+      "width","length","e2e","custom","batting","thread","backingSupplied","backingYards","label","minutes",
+      "repairs","ironing","trimming"
+    ].map($);
+
+    function money(n){
+      return (isFinite(n) ? n : 0).toLocaleString(undefined, {style:"currency", currency:"USD"});
+    }
+
+    function getNumber(id){
+      const v = parseFloat($(id).value);
+      return isFinite(v) ? v : 0;
+    }
+
+    function selectedDataNumber(selectId, attr){
+      const el = $(selectId);
+      const opt = el.options[el.selectedIndex];
+      const raw = opt.getAttribute(attr);
+      const v = parseFloat(raw);
+      return isFinite(v) ? v : 0;
+    }
+
+    function calc(){
+      const w = getNumber("width");
+      const l = getNumber("length");
+      const area = w * l;
+
+      $("sqIn").textContent = area > 0 ? area.toFixed(2) : "—";
+
+      const e2eRate = selectedDataNumber("e2e", "data-rate");
+      const e2eCost = area * e2eRate;
+
+      const backingYards = getNumber("backingYards");
+      const backingRate = selectedDataNumber("backingSupplied", "data-peryard");
+      const backingCost = backingYards * backingRate;
+
+      const battingPerYard = selectedDataNumber("batting", "data-peryard");
+      const battingCost = backingYards * battingPerYard;
+
+      let addons = 0;
+      ["repairs","ironing","trimming"].forEach(id => {
+        const cb = $(id);
+        if (cb.checked){
+          const fee = parseFloat(cb.getAttribute("data-fee"));
+          addons += isFinite(fee) ? fee : 0;
+        }
+      });
+
+      // Custom quilting is TBD (not priced). You can add a rule here if you want.
+      const customChoice = $("custom").value;
+      const customIsChosen = customChoice !== "none";
+      $("customCost").textContent = customIsChosen ? "TBD" : money(0);
+
+      $("e2eCost").textContent = money(e2eCost);
+      $("backingCost").textContent = money(backingCost);
+      $("battingCost").textContent = money(battingCost);
+      $("addonsCost").textContent = money(addons);
+
+      // Total includes only items with explicit pricing rules.
+      const total = e2eCost + backingCost + battingCost + addons;
+      $("totalCost").innerHTML = "<strong>" + money(total) + "</strong>";
+
+      // warn if both E2E and Custom selected
+      const e2eChosen = $("e2e").value !== "none";
+      $("designNote").style.display = (e2eChosen && customIsChosen) ? "block" : "none";
+    }
+
+    function defaultDates(){
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth()+1).padStart(2,"0");
+      const dd = String(today.getDate()).padStart(2,"0");
+      $("dateOrdered").value = `${yyyy}-${mm}-${dd}`;
+    }
+
+    function buildOrderText(){
+      const lines = [];
+      lines.push("Long Arm Quilting Order Form_V1");
+      lines.push("================================");
+      lines.push(`Date Ordered: ${$("dateOrdered").value}`);
+      lines.push(`Customer Name: ${$("customerName").value}`);
+      lines.push(`Phone: ${$("phone").value}`);
+      lines.push(`Email: ${$("email").value}`);
+      lines.push(`Requested Completion Date: ${$("requestedDate").value}`);
+      lines.push("");
+      lines.push("Quilt Top");
+      lines.push(`- Width (in): ${$("width").value}`);
+      lines.push(`- Length (in): ${$("length").value}`);
+      lines.push(`- Pattern: ${$("pattern").value}`);
+      lines.push("");
+      lines.push("Quilting Design");
+      lines.push(`- Edge to Edge: ${$("e2e").options[$("e2e").selectedIndex].text}`);
+      lines.push(`- Custom: ${$("custom").options[$("custom").selectedIndex].text}`);
+      lines.push("");
+      lines.push("Materials");
+      lines.push(`- Batting: ${$("batting").options[$("batting").selectedIndex].text}`);
+      lines.push(`- Thread: ${$("thread").options[$("thread").selectedIndex].text}`);
+      lines.push(`- B&N Supplied Backing Fabric: ${$("backingSupplied").options[$("backingSupplied").selectedIndex].text}`);
+      lines.push(`- Yards of Backing: ${$("backingYards").value}`);
+      lines.push("");
+      lines.push("Label & Stitching");
+      lines.push(`- Embroidered Quilt Label: ${$("label").options[$("label").selectedIndex].text}`);
+      lines.push(`- Minutes for Stitching: ${$("minutes").value}`);
+      if ($("labelNotes").value.trim()) lines.push(`- Notes: ${$("labelNotes").value.trim()}`);
+      lines.push("");
+      const charges = [];
+      if ($("repairs").checked) charges.push("Repairs ($10)");
+      if ($("ironing").checked) charges.push("Ironing ($10)");
+      if ($("trimming").checked) charges.push("Trimming Quilt ($10)");
+      lines.push("Other Charges");
+      lines.push(`- ${charges.length ? charges.join(", ") : "None"}`);
+      lines.push("");
+      lines.push("Estimate");
+      lines.push(`- Square inches: ${$("sqIn").textContent}`);
+      lines.push(`- E2E cost: ${$("e2eCost").textContent}`);
+      lines.push(`- Custom cost: ${$("customCost").textContent}`);
+      lines.push(`- Backing cost: ${$("backingCost").textContent}`);
+      lines.push(`- Batting cost: ${$("battingCost").textContent}`);
+      lines.push(`- Add-ons: ${$("addonsCost").textContent}`);
+      lines.push(`- Estimated total: ${$("totalCost").innerText}`);
+      lines.push("");
+      lines.push("Note: Custom quilting is marked TBD unless priced separately.");
+      return lines.join("\n");
+    }
+
+    function downloadText(filename, text){
+      const blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // init
+    defaultDates();
+    calc();
+
+    inputsToWatch.forEach(el => el.addEventListener("input", calc));
+    form.addEventListener("reset", () => setTimeout(() => { defaultDates(); calc(); }, 0));
+
+    $("downloadBtn").addEventListener("click", () => {
+      // Validate required fields quickly; if missing, browser will show what’s required.
+      if (!form.reportValidity()) return;
+
+      const text = buildOrderText();
+      const safeName = ($("customerName").value || "order").trim().replace(/[^a-z0-9]+/gi,"_");
+      const filename = `quilting_order_${safeName}.txt`;
+      downloadText(filename, text);
+
+      const box = $("statusBox");
+      box.style.display = "block";
+      box.textContent = "Downloaded. If you want customers to submit online (not download), connect this form to a free form backend (see hosting notes).";
+    });
+  </script>
+</body>
+</html>
