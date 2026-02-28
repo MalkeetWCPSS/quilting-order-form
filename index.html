@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Long Arm Quilting Invoice Form</title>
+  <title>Long Arm Quilting Order Form</title>
   <style>
     @media print {
       body {
@@ -38,8 +38,6 @@
 
       .btn-row,
       .status-box,
-      .note-box,
-      .footer-note,
       .remove-quilt-btn,
       #addQuiltBtn {
         display: none !important;
@@ -76,17 +74,12 @@
     }
 
     :root {
-      --bg: #f6f7fb;
       --panel: #ffffff;
       --text: #14161a;
       --muted: #5e6470;
       --line: #e5e7eb;
-      --accent: #111827;
-      --accent-2: #6d28d9;
       --success: #ecfdf3;
       --success-border: #bbf7d0;
-      --warn: #fff7ed;
-      --warn-border: #fed7aa;
       --shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
       --radius: 18px;
       --radius-sm: 12px;
@@ -155,24 +148,20 @@
     }
 
     .grid-2,
-    .grid-3,
     .grid-4 {
       display: grid;
       gap: 14px;
     }
 
     .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
     @media (max-width: 940px) {
       .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 720px) {
       .grid-2,
-      .grid-3,
       .grid-4 { grid-template-columns: 1fr; }
       .hero { border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; }
       .section { padding: 18px; }
@@ -348,20 +337,12 @@
       .totals-layout { grid-template-columns: 1fr; }
     }
 
-    .note-box,
     .status-box,
-    .disclaimer-box,
-    .test-box {
+    .disclaimer-box {
       border-radius: 16px;
       padding: 14px 16px;
       line-height: 1.55;
       font-size: 0.93rem;
-    }
-
-    .note-box {
-      background: var(--warn);
-      border: 1px solid var(--warn-border);
-      color: #9a3412;
     }
 
     .status-box {
@@ -372,8 +353,7 @@
       margin-bottom: 14px;
     }
 
-    .disclaimer-box,
-    .test-box {
+    .disclaimer-box {
       background: #f8fafc;
       border: 1px solid #dbe4f0;
       color: #334155;
@@ -399,13 +379,6 @@
     .total-row strong { font-size: 1.02rem; }
     .grand { background: #f3f0ff; }
 
-    .footer-note {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.88rem;
-      margin-top: 18px;
-    }
-
     .inline-money {
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -415,10 +388,9 @@
 <body>
   <header class="hero">
     <div class="hero-inner">
-      <h1>Long Arm Quilting Invoice Form</h1>
+      <h1>Long Arm Quilting Order Form</h1>
       <p>
-        Add one or more quilts to the same order, review a combined invoice, and download a professional order summary.
-        Pricing is treated as an estimate and can be confirmed after review.
+        Add one or more quilts to the same order, review a combined total, and download a printable customer invoice.
       </p>
     </div>
   </header>
@@ -427,7 +399,7 @@
     <form id="invoiceForm">
       <section class="section">
         <h2>Customer Information</h2>
-        <p class="section-note">This information appears once on the invoice, even if the order includes multiple quilts.</p>
+        <p class="section-note">This information appears once, even if the order includes multiple quilts.</p>
         <div class="grid-4">
           <div class="field">
             <label class="required" for="dateOrdered">Date Ordered</label>
@@ -460,7 +432,7 @@
 
       <section class="section">
         <h2>Quilt Items</h2>
-        <p class="section-note">Each quilt has its own measurements, pricing, and subtotal. Add as many quilts as needed to one invoice.</p>
+        <p class="section-note">Each quilt has its own measurements, pricing, and subtotal. Add as many quilts as needed to one order.</p>
         <div id="quiltContainer"></div>
         <div class="btn-row">
           <button type="button" class="secondary" id="addQuiltBtn">+ Add Another Quilt</button>
@@ -469,7 +441,7 @@
 
       <section class="section">
         <h2>Order Extras, Shipping, and Disclaimer</h2>
-        <p class="section-note">These items apply to the full invoice rather than to a single quilt line item.</p>
+        <p class="section-note">These items apply to the full order rather than to a single quilt line item.</p>
         <div class="grid-4">
           <div class="field">
             <label for="repairFee">Repairs</label>
@@ -518,20 +490,12 @@ Please offer feedback on the completed work so I can continue improving my craft
       </section>
 
       <section class="section">
-        <h2>Invoice Summary</h2>
+        <h2>Order Summary</h2>
         <div class="totals-layout">
           <div>
             <div class="status-box" id="statusBox"></div>
-            <div class="note-box">
-              This version uses <strong>Option B</strong>: manual pricing. You or the customer can enter custom rates for quilting,
-              batting, specialty thread, label fees, backing, and any other item.
-            </div>
             <div class="disclaimer-box" style="margin-top:14px;">
-              <strong>Professional tip:</strong> keep the form public for collecting order details, but present all amounts as
-              estimated until you inspect the quilt top and confirm the final invoice.
-            </div>
-            <div class="test-box" style="margin-top:14px;">
-              <strong>Developer checks:</strong> built-in self-tests now verify HTML escaping and line-break conversion for printable disclaimers.
+              Final pricing may be confirmed after review of the quilt top, materials, and requested quilting details.
             </div>
             <div class="btn-row" style="margin-top:16px;">
               <button type="button" class="primary" id="downloadBtn">Download Printable Invoice (HTML)</button>
@@ -541,20 +505,14 @@ Please offer feedback on the completed work so I can continue improving my craft
           </div>
           <div>
             <div class="total-list">
-              <div class="total-row"><span>Combined quilt subtotal</span><strong class="inline-money" id="combinedQuiltSubtotal">$0.00</strong></div>
-              <div class="total-row"><span>Repairs</span><span class="inline-money" id="repairsTotal">$0.00</span></div>
-              <div class="total-row"><span>Ironing</span><span class="inline-money" id="ironingTotal">$0.00</span></div>
-              <div class="total-row"><span>Trimming</span><span class="inline-money" id="trimmingTotal">$0.00</span></div>
-              <div class="total-row"><span>Shipping</span><span class="inline-money" id="shippingTotal">$0.00</span></div>
-              <div class="total-row"><span id="otherLabelSummary">Other charges</span><span class="inline-money" id="otherTotal">$0.00</span></div>
+              <div class="total-row"><span>Quilt Subtotal</span><strong class="inline-money" id="combinedQuiltSubtotal">$0.00</strong></div>
+              <div class="total-row"><span>Order Extras</span><span class="inline-money" id="orderExtrasTotal">$0.00</span></div>
               <div class="total-row grand"><span><strong>Total Due</strong></span><strong class="inline-money" id="grandTotal">$0.00</strong></div>
             </div>
           </div>
         </div>
       </section>
     </form>
-
-    <p class="footer-note">Built as a single-file website so you can paste it directly into your GitHub Pages <code>index.html</code>.</p>
   </main>
 
   <template id="quiltTemplate">
@@ -609,7 +567,7 @@ Please offer feedback on the completed work so I can continue improving my craft
         <div class="field">
           <label>Quilting Rate (per sq in)</label>
           <input type="number" step="0.0001" min="0" class="quilting-rate" value="0.0200" />
-          <div class="hint">Enter your actual rate for this quilt. The default is just a starting point.</div>
+          <div class="hint">Enter your actual rate for this quilt.</div>
         </div>
       </div>
 
@@ -628,7 +586,7 @@ Please offer feedback on the completed work so I can continue improving my craft
         <div class="field">
           <label>Batting Rate (per sq in)</label>
           <input type="number" step="0.0001" min="0" class="batting-rate" value="0.0000" />
-          <div class="hint">Examples from your sheet: Poly 0.003, 80/20 0.005, Wool 0.0065, Bamboo 0.0065.</div>
+          <div class="hint">Examples: Poly 0.003, 80/20 0.005, Wool 0.0065.</div>
         </div>
         <div class="field">
           <label>Backing Price per Yard</label>
@@ -689,7 +647,7 @@ Please offer feedback on the completed work so I can continue improving my craft
         </div>
         <div class="mini-stat">
           <div class="label">Extras Total</div>
-          <div class="value inline-money extras-total">$0.00</div>
+          <div class="value inline-money quilt-extras-total">$0.00</div>
         </div>
       </div>
     </article>
@@ -774,7 +732,7 @@ Please offer feedback on the completed work so I can continue improving my craft
         recalcAll();
       });
 
-      card.querySelectorAll('input, select').forEach(el => {
+      card.querySelectorAll('input, select').forEach((el) => {
         el.addEventListener('input', recalcAll);
         el.addEventListener('change', recalcAll);
       });
@@ -814,14 +772,14 @@ Please offer feedback on the completed work so I can continue improving my craft
       const quiltingTotal = squareInches * quiltingRate;
       const battingTotal = squareInches * battingRate;
       const backingTotal = backingRate * backingYards;
-      const extrasTotal = threadUpcharge + labelFee + otherQuiltFee;
-      const subtotal = quiltingTotal + battingTotal + backingTotal + extrasTotal;
+      const quiltExtrasTotal = threadUpcharge + labelFee + otherQuiltFee;
+      const subtotal = quiltingTotal + battingTotal + backingTotal + quiltExtrasTotal;
 
       card.querySelector('.square-inches').value = squareInches ? squareInches.toFixed(2) : '';
       card.querySelector('.quilting-total').textContent = money(quiltingTotal);
       card.querySelector('.batting-total').textContent = money(battingTotal);
       card.querySelector('.backing-total').textContent = money(backingTotal);
-      card.querySelector('.extras-total').textContent = money(extrasTotal);
+      card.querySelector('.quilt-extras-total').textContent = money(quiltExtrasTotal);
       card.querySelector('.quilt-line-subtotal').textContent = money(subtotal);
 
       return {
@@ -829,14 +787,14 @@ Please offer feedback on the completed work so I can continue improving my craft
         quiltingTotal,
         battingTotal,
         backingTotal,
-        extrasTotal,
+        quiltExtrasTotal,
         subtotal
       };
     }
 
     function recalcAll() {
       let combinedQuiltSubtotal = 0;
-      quiltContainer.querySelectorAll('.quilt-card').forEach(card => {
+      quiltContainer.querySelectorAll('.quilt-card').forEach((card) => {
         const calc = calculateCard(card);
         combinedQuiltSubtotal += calc.subtotal;
       });
@@ -846,18 +804,12 @@ Please offer feedback on the completed work so I can continue improving my craft
       const trimming = num(document.getElementById('trimmingFee').value);
       const shipping = num(document.getElementById('shippingFee').value);
       const other = num(document.getElementById('otherFee').value);
-      const grandTotal = combinedQuiltSubtotal + repairs + ironing + trimming + shipping + other;
+      const orderExtrasTotal = repairs + ironing + trimming + shipping + other;
+      const grandTotal = combinedQuiltSubtotal + orderExtrasTotal;
 
       document.getElementById('combinedQuiltSubtotal').textContent = money(combinedQuiltSubtotal);
-      document.getElementById('repairsTotal').textContent = money(repairs);
-      document.getElementById('ironingTotal').textContent = money(ironing);
-      document.getElementById('trimmingTotal').textContent = money(trimming);
-      document.getElementById('shippingTotal').textContent = money(shipping);
-      document.getElementById('otherTotal').textContent = money(other);
+      document.getElementById('orderExtrasTotal').textContent = money(orderExtrasTotal);
       document.getElementById('grandTotal').textContent = money(grandTotal);
-
-      const otherLabel = document.getElementById('otherFeeLabel').value.trim();
-      document.getElementById('otherLabelSummary').textContent = otherLabel || 'Other charges';
     }
 
     function escapeHtml(value) {
@@ -886,7 +838,7 @@ Please offer feedback on the completed work so I can continue improving my craft
         customerName: document.getElementById('customerName').value,
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
-        customerNotes: document.getElementById('customerNotes').value,
+        customerNotes: document.getElementById('customerNotes').value
       };
 
       const repairs = num(document.getElementById('repairFee').value);
@@ -918,8 +870,8 @@ Please offer feedback on the completed work so I can continue improving my craft
         const quiltingTotal = squareInches * quiltingRate;
         const battingTotal = squareInches * battingRate;
         const backingTotal = backingRate * backingYards;
-        const extrasTotal = threadUpcharge + labelFee + otherQuiltFee;
-        const subtotal = quiltingTotal + battingTotal + backingTotal + extrasTotal;
+        const quiltExtrasTotal = threadUpcharge + labelFee + otherQuiltFee;
+        const subtotal = quiltingTotal + battingTotal + backingTotal + quiltExtrasTotal;
         combinedQuiltSubtotal += subtotal;
 
         const quiltName = card.querySelector('.quilt-name').value || `Quilt ${index + 1}`;
@@ -959,7 +911,8 @@ Please offer feedback on the completed work so I can continue improving my craft
           </section>`;
       });
 
-      const grandTotal = combinedQuiltSubtotal + repairs + ironing + trimming + shipping + otherFee;
+      const orderExtrasTotal = repairs + ironing + trimming + shipping + otherFee;
+      const grandTotal = combinedQuiltSubtotal + orderExtrasTotal;
 
       return `<!DOCTYPE html>
 <html lang="en">
@@ -1076,9 +1029,7 @@ Please offer feedback on the completed work so I can continue improving my craft
     }
 
     function attachGlobalRecalc() {
-      [
-        'repairFee', 'ironingFee', 'trimmingFee', 'shippingFee', 'otherFee', 'otherFeeLabel'
-      ].forEach(id => {
+      ['repairFee', 'ironingFee', 'trimmingFee', 'shippingFee', 'otherFee', 'otherFeeLabel'].forEach((id) => {
         document.getElementById(id).addEventListener('input', recalcAll);
       });
     }
@@ -1106,7 +1057,12 @@ Please offer feedback on the completed work so I can continue improving my craft
         pass: typeof money(0) === 'string' && money(0).includes('0')
       });
 
-      const failed = tests.filter(test => !test.pass);
+      tests.push({
+        name: 'order summary total element exists',
+        pass: !!document.getElementById('orderExtrasTotal')
+      });
+
+      const failed = tests.filter((test) => !test.pass);
       if (failed.length) {
         console.error('Self-tests failed:', failed);
       } else {
