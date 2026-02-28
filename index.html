@@ -74,6 +74,7 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
     }
+
     :root {
       --bg: #f6f7fb;
       --panel: #ffffff;
@@ -93,6 +94,7 @@
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -348,7 +350,8 @@
 
     .note-box,
     .status-box,
-    .disclaimer-box {
+    .disclaimer-box,
+    .test-box {
       border-radius: 16px;
       padding: 14px 16px;
       line-height: 1.55;
@@ -369,7 +372,8 @@
       margin-bottom: 14px;
     }
 
-    .disclaimer-box {
+    .disclaimer-box,
+    .test-box {
       background: #f8fafc;
       border: 1px solid #dbe4f0;
       color: #334155;
@@ -507,7 +511,9 @@
         </div>
         <div class="field" style="margin-top:14px;">
           <label for="disclaimerText">Disclaimer / Terms</label>
-          <textarea id="disclaimerText">Prices shown are estimates and may be adjusted after review of the quilt top, materials, requested quilting density, or additional work required. By submitting this order, the customer acknowledges that final pricing and completion timing will be confirmed after review. Please offer feedback on the completed work so I can continue improving my craft.</textarea>
+          <textarea id="disclaimerText">Prices shown are estimates and may be adjusted after review of the quilt top, materials, requested quilting density, or additional work required.
+By submitting this order, the customer acknowledges that final pricing and completion timing will be confirmed after review.
+Please offer feedback on the completed work so I can continue improving my craft.</textarea>
         </div>
       </section>
 
@@ -523,6 +529,9 @@
             <div class="disclaimer-box" style="margin-top:14px;">
               <strong>Professional tip:</strong> keep the form public for collecting order details, but present all amounts as
               estimated until you inspect the quilt top and confirm the final invoice.
+            </div>
+            <div class="test-box" style="margin-top:14px;">
+              <strong>Developer checks:</strong> built-in self-tests now verify HTML escaping and line-break conversion for printable disclaimers.
             </div>
             <div class="btn-row" style="margin-top:16px;">
               <button type="button" class="primary" id="downloadBtn">Download Printable Invoice (HTML)</button>
@@ -694,8 +703,8 @@
     const statusBox = document.getElementById('statusBox');
 
     function money(value) {
-      const num = Number(value) || 0;
-      return num.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+      const numericValue = Number(value) || 0;
+      return numericValue.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
     }
 
     function num(value) {
@@ -856,8 +865,12 @@
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/\"/g, '&quot;')
+        .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function formatMultilineText(text) {
+      return escapeHtml(text).replace(/\r\n|\r|\n/g, '<br>');
     }
 
     function currentDateLabel() {
@@ -1033,8 +1046,7 @@
 
   <div class="disclaimer">
     <strong>Disclaimer / Terms</strong>
-    <p>${escapeHtml(disclaimerText).replace(/
-/g, '<br>')}</p>
+    <p>${formatMultilineText(disclaimerText)}</p>
   </div>
 
   <div class="signature">
@@ -1054,21 +1066,12 @@
     function downloadFile(filename, content, mimeType) {
       const blob = new Blob([content], { type: mimeType });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
       URL.revokeObjectURL(url);
     }
 
@@ -1078,6 +1081,37 @@
       ].forEach(id => {
         document.getElementById(id).addEventListener('input', recalcAll);
       });
+    }
+
+    function runSelfTests() {
+      const tests = [];
+
+      tests.push({
+        name: 'escapeHtml escapes angle brackets',
+        pass: escapeHtml('<b>Test</b>') === '&lt;b&gt;Test&lt;/b&gt;'
+      });
+
+      tests.push({
+        name: 'formatMultilineText converts newlines to br',
+        pass: formatMultilineText('Line 1\nLine 2') === 'Line 1<br>Line 2'
+      });
+
+      tests.push({
+        name: 'formatMultilineText handles CRLF newlines',
+        pass: formatMultilineText('Line 1\r\nLine 2') === 'Line 1<br>Line 2'
+      });
+
+      tests.push({
+        name: 'money formats zero as USD',
+        pass: typeof money(0) === 'string' && money(0).includes('0')
+      });
+
+      const failed = tests.filter(test => !test.pass);
+      if (failed.length) {
+        console.error('Self-tests failed:', failed);
+      } else {
+        console.info('All self-tests passed.');
+      }
     }
 
     addQuiltBtn.addEventListener('click', () => addQuilt());
@@ -1102,7 +1136,9 @@
         quiltContainer.innerHTML = '';
         addQuilt();
         setTodayDefaults();
-        document.getElementById('disclaimerText').value = 'Prices shown are estimates and may be adjusted after review of the quilt top, materials, requested quilting density, or additional work required. By submitting this order, the customer acknowledges that final pricing and completion timing will be confirmed after review. Please offer feedback on the completed work so I can continue improving my craft.';
+        document.getElementById('disclaimerText').value = `Prices shown are estimates and may be adjusted after review of the quilt top, materials, requested quilting density, or additional work required.
+By submitting this order, the customer acknowledges that final pricing and completion timing will be confirmed after review.
+Please offer feedback on the completed work so I can continue improving my craft.`;
         statusBox.style.display = 'none';
         recalcAll();
       }, 0);
@@ -1111,6 +1147,7 @@
     setTodayDefaults();
     attachGlobalRecalc();
     addQuilt();
+    runSelfTests();
   </script>
 </body>
 </html>
