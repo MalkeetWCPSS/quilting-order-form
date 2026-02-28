@@ -1,412 +1,891 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Long Arm Quilting Order Form</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Long Arm Quilting Invoice Form</title>
   <style>
-    :root { --max: 920px; }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#fafafa; color:#111; }
-    header { padding: 28px 16px; background:#111; color:#fff; }
-    header .wrap { max-width: var(--max); margin: 0 auto; }
-    h1 { margin: 0 0 6px 0; font-size: 22px; font-weight: 700; }
-    p.sub { margin: 0; opacity: .85; }
-    main { padding: 18px 16px 40px; }
-    .wrap { max-width: var(--max); margin: 0 auto; }
-    form { background:#fff; border:1px solid #e8e8e8; border-radius: 14px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
-    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .grid3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-    @media (max-width: 780px){ .grid, .grid3 { grid-template-columns: 1fr; } }
-    fieldset { border: 0; padding: 0; margin: 0 0 16px 0; }
-    legend { font-weight: 700; margin: 10px 0 10px; }
-    label { display:block; font-size: 13px; margin: 0 0 6px; font-weight: 600; }
-    input, select, textarea {
-      width: 100%; box-sizing: border-box;
-      padding: 10px 12px; border-radius: 10px;
-      border: 1px solid #d8d8d8; background:#fff; outline: none;
-      font-size: 14px;
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #14161a;
+      --muted: #5e6470;
+      --line: #e5e7eb;
+      --accent: #111827;
+      --accent-2: #6d28d9;
+      --success: #ecfdf3;
+      --success-border: #bbf7d0;
+      --warn: #fff7ed;
+      --warn-border: #fed7aa;
+      --shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --max: 1180px;
     }
-    textarea { min-height: 92px; resize: vertical; }
-    .help { font-size: 12px; color:#444; margin-top: 6px; }
-    .req { color:#b00020; margin-left: 2px; }
-    .row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
-    .chips { display:flex; gap: 10px; flex-wrap: wrap; }
-    .chip { border:1px solid #d8d8d8; padding: 10px 12px; border-radius: 12px; flex: 1 1 260px; }
-    .chip input { width: auto; }
-    .chip label { display:inline; font-weight: 600; margin: 0; }
-    .summary {
-      margin-top: 16px;
-      border-top: 1px dashed #ddd;
-      padding-top: 14px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f8fafc 0%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #111827 55%, #1f2937 100%);
+      color: white;
+      padding: 36px 20px 30px;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-inner,
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 2.7vw, 2.8rem);
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255,255,255,.82);
+      max-width: 760px;
+      line-height: 1.55;
+    }
+
+    .container {
+      padding: 24px 20px 40px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+    }
+
+    .section p.section-note {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
       gap: 14px;
     }
-    @media (max-width: 780px){ .summary { grid-template-columns: 1fr; } }
-    .card { border:1px solid #ececec; border-radius: 14px; padding: 14px; background:#fcfcfc; }
-    .money { font-variant-numeric: tabular-nums; }
-    .btns { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
-    button {
-      border: 0; padding: 11px 14px; border-radius: 12px;
-      font-weight: 700; cursor: pointer;
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    @media (max-width: 940px) {
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-    button.primary { background:#111; color:#fff; }
-    button.secondary { background:#efefef; color:#111; }
-    .small { font-size: 12px; color:#555; }
-    .warn { color:#8a2d00; background:#fff3e8; border:1px solid #ffd7bf; padding: 10px 12px; border-radius: 12px; }
-    .ok { color:#0f5132; background:#e9f7ef; border:1px solid #c9efd8; padding: 10px 12px; border-radius: 12px; }
-    .line { display:flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid #eee; }
-    .line:last-child { border-bottom: none; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+    @media (max-width: 720px) {
+      .grid-2,
+      .grid-3,
+      .grid-4 { grid-template-columns: 1fr; }
+      .hero { border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; }
+      .section { padding: 18px; }
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .required::after {
+      content: " *";
+      color: #b91c1c;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #d7dbe2;
+      background: #fff;
+      border-radius: var(--radius-sm);
+      padding: 12px 13px;
+      font-size: 0.96rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .quilt-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(180deg, #fff 0%, #fcfcff 100%);
+      margin-bottom: 16px;
+    }
+
+    .quilt-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .quilt-title {
+      font-size: 1rem;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      font-weight: 700;
+    }
+
+    .quilt-summary {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .quilt-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .quilt-summary { grid-template-columns: 1fr; }
+    }
+
+    .mini-stat {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: #fafafa;
+    }
+
+    .mini-stat .label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+
+    .mini-stat .value {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .08s ease, opacity .2s ease;
+    }
+
+    button:hover { opacity: .96; }
+    button:active { transform: translateY(1px); }
+
+    .primary {
+      background: linear-gradient(135deg, #111827, #312e81);
+      color: white;
+    }
+
+    .secondary {
+      background: #eef2ff;
+      color: #312e81;
+      border: 1px solid #c7d2fe;
+    }
+
+    .ghost {
+      background: #f9fafb;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+
+    .danger {
+      background: #fff1f2;
+      color: #9f1239;
+      border: 1px solid #fecdd3;
+    }
+
+    .totals-layout {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .totals-layout { grid-template-columns: 1fr; }
+    }
+
+    .note-box,
+    .status-box,
+    .disclaimer-box {
+      border-radius: 16px;
+      padding: 14px 16px;
+      line-height: 1.55;
+      font-size: 0.93rem;
+    }
+
+    .note-box {
+      background: var(--warn);
+      border: 1px solid var(--warn-border);
+      color: #9a3412;
+    }
+
+    .status-box {
+      background: var(--success);
+      border: 1px solid var(--success-border);
+      color: #166534;
+      display: none;
+      margin-bottom: 14px;
+    }
+
+    .disclaimer-box {
+      background: #f8fafc;
+      border: 1px solid #dbe4f0;
+      color: #334155;
+    }
+
+    .total-list {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fcfcfd;
+      overflow: hidden;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.95rem;
+    }
+
+    .total-row:last-child { border-bottom: 0; }
+    .total-row strong { font-size: 1.02rem; }
+    .grand { background: #f3f0ff; }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 18px;
+    }
+
+    .inline-money {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="wrap">
-      <h1>Long Arm Quilting Order Form</h1>
-      <p class="sub">Fill out details below. The estimate updates automatically.</p>
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>Long Arm Quilting Invoice Form</h1>
+      <p>
+        Add one or more quilts to the same order, review a combined invoice, and download a professional order summary.
+        Pricing is treated as an estimate and can be confirmed after review.
+      </p>
     </div>
   </header>
 
-  <main>
-    <div class="wrap">
-      <form id="orderForm">
-        <fieldset>
-          <legend>Customer & Dates</legend>
-          <div class="grid3">
-            <div>
-              <label for="dateOrdered">Date Ordered<span class="req">*</span></label>
-              <input id="dateOrdered" name="dateOrdered" type="date" required />
+  <main class="container">
+    <form id="invoiceForm">
+      <section class="section">
+        <h2>Customer Information</h2>
+        <p class="section-note">This information appears once on the invoice, even if the order includes multiple quilts.</p>
+        <div class="grid-4">
+          <div class="field">
+            <label class="required" for="dateOrdered">Date Ordered</label>
+            <input id="dateOrdered" name="dateOrdered" type="date" required />
+          </div>
+          <div class="field">
+            <label class="required" for="requestedDate">Requested Completion Date</label>
+            <input id="requestedDate" name="requestedDate" type="date" required />
+          </div>
+          <div class="field">
+            <label class="required" for="customerName">Customer Name</label>
+            <input id="customerName" name="customerName" type="text" required />
+          </div>
+          <div class="field">
+            <label class="required" for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" required />
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="field">
+            <label class="required" for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="customerNotes">Customer Notes</label>
+            <input id="customerNotes" name="customerNotes" type="text" placeholder="Optional notes about drop-off, timing, or special instructions" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Quilt Items</h2>
+        <p class="section-note">Each quilt has its own measurements, pricing, and subtotal. Add as many quilts as needed to one invoice.</p>
+        <div id="quiltContainer"></div>
+        <div class="btn-row">
+          <button type="button" class="secondary" id="addQuiltBtn">+ Add Another Quilt</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Order Extras, Shipping, and Disclaimer</h2>
+        <p class="section-note">These items apply to the full invoice rather than to a single quilt line item.</p>
+        <div class="grid-4">
+          <div class="field">
+            <label for="repairFee">Repairs</label>
+            <input id="repairFee" type="number" step="0.01" min="0" value="0" />
+            <div class="hint">Enter total repair charges for the full order.</div>
+          </div>
+          <div class="field">
+            <label for="ironingFee">Ironing</label>
+            <input id="ironingFee" type="number" step="0.01" min="0" value="0" />
+          </div>
+          <div class="field">
+            <label for="trimmingFee">Trimming Quilt</label>
+            <input id="trimmingFee" type="number" step="0.01" min="0" value="0" />
+          </div>
+          <div class="field">
+            <label for="shippingFee">Shipping</label>
+            <input id="shippingFee" type="number" step="0.01" min="0" value="0" />
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="field">
+            <label for="otherFee">Other Charges</label>
+            <input id="otherFee" type="number" step="0.01" min="0" value="0" />
+          </div>
+          <div class="field">
+            <label for="otherFeeLabel">Other Charge Description</label>
+            <input id="otherFeeLabel" type="text" placeholder="Optional description for other charges" />
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="field">
+            <label for="signatureName">Customer Signature Name</label>
+            <input id="signatureName" type="text" placeholder="Type full name to acknowledge terms" />
+          </div>
+          <div class="field">
+            <label for="signatureDate">Signature Date</label>
+            <input id="signatureDate" type="date" />
+          </div>
+        </div>
+        <div class="field" style="margin-top:14px;">
+          <label for="disclaimerText">Disclaimer / Terms</label>
+          <textarea id="disclaimerText">Prices shown are estimates and may be adjusted after review of the quilt top, materials, requested quilting density, or additional work required. By submitting this order, the customer acknowledges that final pricing and completion timing will be confirmed after review. Please offer feedback on the completed work so I can continue improving my craft.</textarea>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Invoice Summary</h2>
+        <div class="totals-layout">
+          <div>
+            <div class="status-box" id="statusBox"></div>
+            <div class="note-box">
+              This version uses <strong>Option B</strong>: manual pricing. You or the customer can enter custom rates for quilting,
+              batting, specialty thread, label fees, backing, and any other item.
             </div>
-            <div>
-              <label for="requestedDate">Requested Completion Date<span class="req">*</span></label>
-              <input id="requestedDate" name="requestedDate" type="date" required />
+            <div class="disclaimer-box" style="margin-top:14px;">
+              <strong>Professional tip:</strong> keep the form public for collecting order details, but present all amounts as
+              estimated until you inspect the quilt top and confirm the final invoice.
             </div>
-            <div>
-              <label for="customerName">Customer Name<span class="req">*</span></label>
-              <input id="customerName" name="customerName" type="text" required />
+            <div class="btn-row" style="margin-top:16px;">
+              <button type="button" class="primary" id="downloadBtn">Download Invoice (TXT)</button>
+              <button type="button" class="ghost" id="printBtn">Print / Save as PDF</button>
+              <button type="reset" class="danger">Reset Form</button>
             </div>
           </div>
-
-          <div class="grid">
-            <div>
-              <label for="phone">Phone Number<span class="req">*</span></label>
-              <input id="phone" name="phone" type="tel" required />
-            </div>
-            <div>
-              <label for="email">Email<span class="req">*</span></label>
-              <input id="email" name="email" type="email" required />
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Quilt Top Dimensions</legend>
-          <div class="grid3">
-            <div>
-              <label for="width">Width of Quilt Top (inches)<span class="req">*</span></label>
-              <input id="width" name="width" type="number" step="0.01" min="1" required />
-            </div>
-            <div>
-              <label for="length">Length of Quilt Top (inches)<span class="req">*</span></label>
-              <input id="length" name="length" type="number" step="0.01" min="1" required />
-            </div>
-            <div>
-              <label for="pattern">Pattern<span class="req">*</span></label>
-              <input id="pattern" name="pattern" type="text" placeholder="e.g., Stars / Patchwork / etc." required />
-            </div>
-          </div>
-          <div class="help">Area is calculated as width × length (square inches).</div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Quilting Design</legend>
-
-          <div class="grid">
-            <div class="card">
-              <label for="e2e">Quilting Design — Edge to Edge<span class="req">*</span></label>
-              <select id="e2e" name="e2e" required>
-                <option value="none" data-rate="0">None ($0)</option>
-                <option value="regular" data-rate="0.02">Regular Stitch Density ($0.02/sq in)</option>
-                <option value="complex" data-rate="0.03">Complex Stitch Density ($0.03/sq in)</option>
-              </select>
-              <div class="help">If you choose E2E, pricing uses square inches × rate.</div>
-            </div>
-
-            <div class="card">
-              <label for="custom">Quilting Design — Custom<span class="req">*</span></label>
-              <select id="custom" name="custom" required>
-                <option value="none">None</option>
-                <option value="regular">Regular</option>
-                <option value="moderate">Moderate</option>
-                <option value="heavy">Heavy</option>
-              </select>
-              <div class="help">Custom quilting is shown as “TBD” here (you can later add your own pricing).</div>
-            </div>
-          </div>
-
-          <div id="designNote" class="warn" style="display:none; margin-top:12px;">
-            You selected both an Edge-to-Edge option and a Custom option. Usually you’d choose one. The estimate will include only Edge-to-Edge pricing unless you add custom pricing rules.
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Materials</legend>
-
-          <div class="grid">
-            <div class="card">
-              <label for="batting">Batting Type<span class="req">*</span></label>
-              <select id="batting" name="batting" required>
-                <option value="customer" data-peryard="0">Customer Supplied ($0)</option>
-                <option value="poly" data-peryard="8">Poly ($8/yard)</option>
-                <option value="8020" data-peryard="9">80/20 ($9/yard)</option>
-                <option value="wool" data-peryard="10">Wool ($10/yard)</option>
-                <option value="bamboo" data-peryard="11">Bamboo ($11/yard)</option>
-              </select>
-              <div class="help">Batting cost uses “Yards of Backing” as the yard count unless you change it.</div>
-            </div>
-
-            <div class="card">
-              <label for="thread">Thread<span class="req">*</span></label>
-              <select id="thread" name="thread" required>
-                <option value="regular" data-fee="0">Regular</option>
-                <option value="specialty" data-fee="0">Specialty</option>
-              </select>
-              <div class="help">No thread fee is applied (add one if you want).</div>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <label for="backingSupplied">B&N Supplied Backing Fabric<span class="req">*</span></label>
-              <select id="backingSupplied" name="backingSupplied" required>
-                <option value="no" data-peryard="0">No ($0)</option>
-                <option value="regular" data-peryard="10">Regular Price ($10/yd)</option>
-                <option value="friend" data-peryard="7">Friend's Discount ($7/yd)</option>
-              </select>
-              <div class="help">Backing cost uses yards entered below × rate.</div>
-            </div>
-
-            <div class="card">
-              <label for="backingYards">Yards of Backing<span class="req">*</span></label>
-              <input id="backingYards" name="backingYards" type="number" step="0.1" min="0" required />
-              <div class="help">Used for backing and batting calculations.</div>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Label & Stitching</legend>
-          <div class="grid">
-            <div class="card">
-              <label for="label">Embroidered Quilt Label<span class="req">*</span></label>
-              <select id="label" name="label" required>
-                <option value="none" data-fee="0">None</option>
-                <option value="other" data-fee="0">Other (describe below)</option>
-              </select>
-              <div class="help">If you charge for labels, you can add a fee in the code.</div>
-            </div>
-            <div class="card">
-              <label for="minutes">Minutes for Stitching<span class="req">*</span></label>
-              <input id="minutes" name="minutes" type="number" step="1" min="0" required />
-              <div class="help">Optional for estimates; currently not priced.</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;">
-            <label for="labelNotes">Label / Other Notes</label>
-            <textarea id="labelNotes" name="labelNotes" placeholder="If you chose 'Other', describe what you want here."></textarea>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Other Charges<span class="req">*</span></legend>
-          <div class="chips">
-            <div class="chip">
-              <input type="checkbox" id="repairs" name="charges" value="repairs" data-fee="10" />
-              <label for="repairs">Repairs ($10)</label>
-            </div>
-            <div class="chip">
-              <input type="checkbox" id="ironing" name="charges" value="ironing" data-fee="10" />
-              <label for="ironing">Ironing ($10)</label>
-            </div>
-            <div class="chip">
-              <input type="checkbox" id="trimming" name="charges" value="trimming" data-fee="10" />
-              <label for="trimming">Trimming Quilt ($10)</label>
-            </div>
-          </div>
-          <div class="help">These add-ons are added to the estimate as flat fees.</div>
-        </fieldset>
-
-        <div class="summary">
-          <div class="card">
-            <div class="line"><div>Square inches</div><div class="mono" id="sqIn">—</div></div>
-            <div class="line"><div>E2E quilting</div><div class="money" id="e2eCost">$0.00</div></div>
-            <div class="line"><div>Custom quilting</div><div class="money" id="customCost">TBD</div></div>
-            <div class="line"><div>Backing</div><div class="money" id="backingCost">$0.00</div></div>
-            <div class="line"><div>Batting</div><div class="money" id="battingCost">$0.00</div></div>
-            <div class="line"><div>Add-ons</div><div class="money" id="addonsCost">$0.00</div></div>
-            <div class="line"><div><strong>Estimated total</strong></div><div class="money" id="totalCost"><strong>$0.00</strong></div></div>
-            <div class="small" style="margin-top:10px;">
-              Note: “Custom quilting” is marked TBD unless you add a pricing rule for it.
-            </div>
-          </div>
-
-          <div class="card">
-            <div id="statusBox" class="ok" style="display:none;"></div>
-            <div class="btns">
-              <button type="button" class="primary" id="downloadBtn">Download Order (TXT)</button>
-              <button type="reset" class="secondary">Reset</button>
-            </div>
-            <div class="small" style="margin-top:10px;">
-              The download button saves your order details to a text file you can email or store.
-              If you want true online submissions, connect Formspree/Netlify Forms later.
+          <div>
+            <div class="total-list">
+              <div class="total-row"><span>Combined quilt subtotal</span><strong class="inline-money" id="combinedQuiltSubtotal">$0.00</strong></div>
+              <div class="total-row"><span>Repairs</span><span class="inline-money" id="repairsTotal">$0.00</span></div>
+              <div class="total-row"><span>Ironing</span><span class="inline-money" id="ironingTotal">$0.00</span></div>
+              <div class="total-row"><span>Trimming</span><span class="inline-money" id="trimmingTotal">$0.00</span></div>
+              <div class="total-row"><span>Shipping</span><span class="inline-money" id="shippingTotal">$0.00</span></div>
+              <div class="total-row"><span id="otherLabelSummary">Other charges</span><span class="inline-money" id="otherTotal">$0.00</span></div>
+              <div class="total-row grand"><span><strong>Total Due</strong></span><strong class="inline-money" id="grandTotal">$0.00</strong></div>
             </div>
           </div>
         </div>
-      </form>
-    </div>
+      </section>
+    </form>
+
+    <p class="footer-note">Built as a single-file website so you can paste it directly into your GitHub Pages <code>index.html</code>.</p>
   </main>
 
+  <template id="quiltTemplate">
+    <article class="quilt-card">
+      <div class="quilt-head">
+        <div>
+          <p class="quilt-title">Quilt <span class="quilt-number"></span></p>
+          <div class="badge">Line item subtotal: <span class="inline-money quilt-line-subtotal">$0.00</span></div>
+        </div>
+        <button type="button" class="ghost remove-quilt-btn">Remove Quilt</button>
+      </div>
+
+      <div class="grid-4">
+        <div class="field">
+          <label class="required">Quilt Name / Description</label>
+          <input type="text" class="quilt-name" placeholder="e.g., Kathy's Star Quilt" required />
+        </div>
+        <div class="field">
+          <label>Thread Color</label>
+          <input type="text" class="thread-color" placeholder="e.g., Cream" />
+        </div>
+        <div class="field">
+          <label>Pattern / Design Notes</label>
+          <input type="text" class="pattern-notes" placeholder="e.g., Feather swirl" />
+        </div>
+        <div class="field">
+          <label>Quilting Style</label>
+          <select class="quilting-style">
+            <option value="Edge to Edge">Edge to Edge</option>
+            <option value="Custom">Custom</option>
+            <option value="Custom / Moderate">Custom / Moderate</option>
+            <option value="Custom / Heavy">Custom / Heavy</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-top:14px;">
+        <div class="field">
+          <label class="required">Width (inches)</label>
+          <input type="number" step="0.01" min="0" class="width" required />
+        </div>
+        <div class="field">
+          <label class="required">Length (inches)</label>
+          <input type="number" step="0.01" min="0" class="length" required />
+        </div>
+        <div class="field">
+          <label>Square Inches</label>
+          <input type="text" class="square-inches" readonly />
+          <div class="hint">Calculated automatically from width × length.</div>
+        </div>
+        <div class="field">
+          <label>Quilting Rate (per sq in)</label>
+          <input type="number" step="0.0001" min="0" class="quilting-rate" value="0.0200" />
+          <div class="hint">Enter your actual rate for this quilt. The default is just a starting point.</div>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-top:14px;">
+        <div class="field">
+          <label>Batting Type</label>
+          <select class="batting-type">
+            <option value="Customer Supplied">Customer Supplied</option>
+            <option value="Poly">Poly</option>
+            <option value="80/20">80/20</option>
+            <option value="Wool">Wool</option>
+            <option value="Bamboo">Bamboo</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Batting Rate (per sq in)</label>
+          <input type="number" step="0.0001" min="0" class="batting-rate" value="0.0000" />
+          <div class="hint">Examples from your sheet: Poly 0.003, 80/20 0.005, Wool 0.0065, Bamboo 0.0065.</div>
+        </div>
+        <div class="field">
+          <label>Backing Price per Yard</label>
+          <input type="number" step="0.01" min="0" class="backing-rate" value="0.00" />
+        </div>
+        <div class="field">
+          <label>Backing Yards</label>
+          <input type="number" step="0.1" min="0" class="backing-yards" value="0" />
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-top:14px;">
+        <div class="field">
+          <label>Thread Type</label>
+          <select class="thread-type">
+            <option value="Regular">Regular</option>
+            <option value="Specialty">Specialty</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Thread Upcharge</label>
+          <input type="number" step="0.01" min="0" class="thread-upcharge" value="0.00" />
+          <div class="hint">Set this to $10.00 or any other amount when specialty thread is used.</div>
+        </div>
+        <div class="field">
+          <label>Label Fee</label>
+          <input type="number" step="0.01" min="0" class="label-fee" value="0.00" />
+        </div>
+        <div class="field">
+          <label>Other Quilt-Specific Fee</label>
+          <input type="number" step="0.01" min="0" class="other-quilt-fee" value="0.00" />
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="field">
+          <label>Backing Pattern / Fabric Notes</label>
+          <input type="text" class="backing-pattern" placeholder="Optional backing notes" />
+        </div>
+        <div class="field">
+          <label>Quilt Notes</label>
+          <input type="text" class="quilt-notes" placeholder="Optional line-item notes" />
+        </div>
+      </div>
+
+      <div class="quilt-summary">
+        <div class="mini-stat">
+          <div class="label">Quilting Total</div>
+          <div class="value inline-money quilting-total">$0.00</div>
+        </div>
+        <div class="mini-stat">
+          <div class="label">Batting Total</div>
+          <div class="value inline-money batting-total">$0.00</div>
+        </div>
+        <div class="mini-stat">
+          <div class="label">Backing Total</div>
+          <div class="value inline-money backing-total">$0.00</div>
+        </div>
+        <div class="mini-stat">
+          <div class="label">Extras Total</div>
+          <div class="value inline-money extras-total">$0.00</div>
+        </div>
+      </div>
+    </article>
+  </template>
+
   <script>
-    // ---------- Pricing rules (edit these if you want) ----------
-    // Edge-to-Edge cost = area_sq_in * rate (rate comes from dropdown data-rate)
-    // Backing cost = backing_yards * backing_rate
-    // Batting cost = backing_yards * batting_per_yard (simple assumption)
-    // Add-ons are flat fees from checkboxes.
+    const quiltContainer = document.getElementById('quiltContainer');
+    const quiltTemplate = document.getElementById('quiltTemplate');
+    const addQuiltBtn = document.getElementById('addQuiltBtn');
+    const form = document.getElementById('invoiceForm');
+    const statusBox = document.getElementById('statusBox');
 
-    const $ = (id) => document.getElementById(id);
-
-    const form = $("orderForm");
-    const inputsToWatch = [
-      "width","length","e2e","custom","batting","thread","backingSupplied","backingYards","label","minutes",
-      "repairs","ironing","trimming"
-    ].map($);
-
-    function money(n){
-      return (isFinite(n) ? n : 0).toLocaleString(undefined, {style:"currency", currency:"USD"});
+    function money(value) {
+      const num = Number(value) || 0;
+      return num.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
     }
 
-    function getNumber(id){
-      const v = parseFloat($(id).value);
-      return isFinite(v) ? v : 0;
+    function num(value) {
+      const parsed = parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
     }
 
-    function selectedDataNumber(selectId, attr){
-      const el = $(selectId);
-      const opt = el.options[el.selectedIndex];
-      const raw = opt.getAttribute(attr);
-      const v = parseFloat(raw);
-      return isFinite(v) ? v : 0;
+    function setTodayDefaults() {
+      const today = new Date().toISOString().slice(0, 10);
+      document.getElementById('dateOrdered').value = today;
+      if (!document.getElementById('signatureDate').value) {
+        document.getElementById('signatureDate').value = today;
+      }
     }
 
-    function calc(){
-      const w = getNumber("width");
-      const l = getNumber("length");
-      const area = w * l;
+    function addQuilt(defaults = {}) {
+      const fragment = quiltTemplate.content.cloneNode(true);
+      const card = fragment.querySelector('.quilt-card');
 
-      $("sqIn").textContent = area > 0 ? area.toFixed(2) : "—";
+      const fields = {
+        quiltName: card.querySelector('.quilt-name'),
+        threadColor: card.querySelector('.thread-color'),
+        patternNotes: card.querySelector('.pattern-notes'),
+        quiltingStyle: card.querySelector('.quilting-style'),
+        width: card.querySelector('.width'),
+        length: card.querySelector('.length'),
+        squareInches: card.querySelector('.square-inches'),
+        quiltingRate: card.querySelector('.quilting-rate'),
+        battingType: card.querySelector('.batting-type'),
+        battingRate: card.querySelector('.batting-rate'),
+        backingRate: card.querySelector('.backing-rate'),
+        backingYards: card.querySelector('.backing-yards'),
+        threadType: card.querySelector('.thread-type'),
+        threadUpcharge: card.querySelector('.thread-upcharge'),
+        labelFee: card.querySelector('.label-fee'),
+        otherQuiltFee: card.querySelector('.other-quilt-fee'),
+        backingPattern: card.querySelector('.backing-pattern'),
+        quiltNotes: card.querySelector('.quilt-notes')
+      };
 
-      const e2eRate = selectedDataNumber("e2e", "data-rate");
-      const e2eCost = area * e2eRate;
-
-      const backingYards = getNumber("backingYards");
-      const backingRate = selectedDataNumber("backingSupplied", "data-peryard");
-      const backingCost = backingYards * backingRate;
-
-      const battingPerYard = selectedDataNumber("batting", "data-peryard");
-      const battingCost = backingYards * battingPerYard;
-
-      let addons = 0;
-      ["repairs","ironing","trimming"].forEach(id => {
-        const cb = $(id);
-        if (cb.checked){
-          const fee = parseFloat(cb.getAttribute("data-fee"));
-          addons += isFinite(fee) ? fee : 0;
-        }
+      Object.entries(defaults).forEach(([key, value]) => {
+        if (fields[key]) fields[key].value = value;
       });
 
-      // Custom quilting is TBD (not priced). You can add a rule here if you want.
-      const customChoice = $("custom").value;
-      const customIsChosen = customChoice !== "none";
-      $("customCost").textContent = customIsChosen ? "TBD" : money(0);
+      fields.threadType.addEventListener('change', () => {
+        if (fields.threadType.value === 'Specialty' && num(fields.threadUpcharge.value) === 0) {
+          fields.threadUpcharge.value = '10.00';
+        }
+        if (fields.threadType.value === 'Regular' && num(fields.threadUpcharge.value) === 10) {
+          fields.threadUpcharge.value = '0.00';
+        }
+        recalcAll();
+      });
 
-      $("e2eCost").textContent = money(e2eCost);
-      $("backingCost").textContent = money(backingCost);
-      $("battingCost").textContent = money(battingCost);
-      $("addonsCost").textContent = money(addons);
+      fields.battingType.addEventListener('change', () => {
+        const type = fields.battingType.value;
+        const presets = {
+          'Customer Supplied': '0.0000',
+          'Poly': '0.0030',
+          '80/20': '0.0050',
+          'Wool': '0.0065',
+          'Bamboo': '0.0065'
+        };
+        if (presets[type] !== undefined) {
+          fields.battingRate.value = presets[type];
+        }
+        recalcAll();
+      });
 
-      // Total includes only items with explicit pricing rules.
-      const total = e2eCost + backingCost + battingCost + addons;
-      $("totalCost").innerHTML = "<strong>" + money(total) + "</strong>";
+      card.querySelectorAll('input, select').forEach(el => {
+        el.addEventListener('input', recalcAll);
+        el.addEventListener('change', recalcAll);
+      });
 
-      // warn if both E2E and Custom selected
-      const e2eChosen = $("e2e").value !== "none";
-      $("designNote").style.display = (e2eChosen && customIsChosen) ? "block" : "none";
+      card.querySelector('.remove-quilt-btn').addEventListener('click', () => {
+        card.remove();
+        renumberQuilts();
+        recalcAll();
+      });
+
+      quiltContainer.appendChild(fragment);
+      renumberQuilts();
+      recalcAll();
     }
 
-    function defaultDates(){
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth()+1).padStart(2,"0");
-      const dd = String(today.getDate()).padStart(2,"0");
-      $("dateOrdered").value = `${yyyy}-${mm}-${dd}`;
+    function renumberQuilts() {
+      const cards = quiltContainer.querySelectorAll('.quilt-card');
+      cards.forEach((card, index) => {
+        card.querySelector('.quilt-number').textContent = index + 1;
+        const removeBtn = card.querySelector('.remove-quilt-btn');
+        removeBtn.style.display = cards.length === 1 ? 'none' : 'inline-flex';
+      });
     }
 
-    function buildOrderText(){
+    function calculateCard(card) {
+      const width = num(card.querySelector('.width').value);
+      const length = num(card.querySelector('.length').value);
+      const squareInches = width * length;
+      const quiltingRate = num(card.querySelector('.quilting-rate').value);
+      const battingRate = num(card.querySelector('.batting-rate').value);
+      const backingRate = num(card.querySelector('.backing-rate').value);
+      const backingYards = num(card.querySelector('.backing-yards').value);
+      const threadUpcharge = num(card.querySelector('.thread-upcharge').value);
+      const labelFee = num(card.querySelector('.label-fee').value);
+      const otherQuiltFee = num(card.querySelector('.other-quilt-fee').value);
+
+      const quiltingTotal = squareInches * quiltingRate;
+      const battingTotal = squareInches * battingRate;
+      const backingTotal = backingRate * backingYards;
+      const extrasTotal = threadUpcharge + labelFee + otherQuiltFee;
+      const subtotal = quiltingTotal + battingTotal + backingTotal + extrasTotal;
+
+      card.querySelector('.square-inches').value = squareInches ? squareInches.toFixed(2) : '';
+      card.querySelector('.quilting-total').textContent = money(quiltingTotal);
+      card.querySelector('.batting-total').textContent = money(battingTotal);
+      card.querySelector('.backing-total').textContent = money(backingTotal);
+      card.querySelector('.extras-total').textContent = money(extrasTotal);
+      card.querySelector('.quilt-line-subtotal').textContent = money(subtotal);
+
+      return {
+        squareInches,
+        quiltingTotal,
+        battingTotal,
+        backingTotal,
+        extrasTotal,
+        subtotal
+      };
+    }
+
+    function recalcAll() {
+      let combinedQuiltSubtotal = 0;
+      quiltContainer.querySelectorAll('.quilt-card').forEach(card => {
+        const calc = calculateCard(card);
+        combinedQuiltSubtotal += calc.subtotal;
+      });
+
+      const repairs = num(document.getElementById('repairFee').value);
+      const ironing = num(document.getElementById('ironingFee').value);
+      const trimming = num(document.getElementById('trimmingFee').value);
+      const shipping = num(document.getElementById('shippingFee').value);
+      const other = num(document.getElementById('otherFee').value);
+      const grandTotal = combinedQuiltSubtotal + repairs + ironing + trimming + shipping + other;
+
+      document.getElementById('combinedQuiltSubtotal').textContent = money(combinedQuiltSubtotal);
+      document.getElementById('repairsTotal').textContent = money(repairs);
+      document.getElementById('ironingTotal').textContent = money(ironing);
+      document.getElementById('trimmingTotal').textContent = money(trimming);
+      document.getElementById('shippingTotal').textContent = money(shipping);
+      document.getElementById('otherTotal').textContent = money(other);
+      document.getElementById('grandTotal').textContent = money(grandTotal);
+
+      const otherLabel = document.getElementById('otherFeeLabel').value.trim();
+      document.getElementById('otherLabelSummary').textContent = otherLabel || 'Other charges';
+    }
+
+    function buildInvoiceText() {
+      const customer = {
+        dateOrdered: document.getElementById('dateOrdered').value,
+        requestedDate: document.getElementById('requestedDate').value,
+        customerName: document.getElementById('customerName').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        customerNotes: document.getElementById('customerNotes').value,
+      };
+
+      const repairs = num(document.getElementById('repairFee').value);
+      const ironing = num(document.getElementById('ironingFee').value);
+      const trimming = num(document.getElementById('trimmingFee').value);
+      const shipping = num(document.getElementById('shippingFee').value);
+      const otherFee = num(document.getElementById('otherFee').value);
+      const otherFeeLabel = document.getElementById('otherFeeLabel').value.trim() || 'Other charges';
+      const signatureName = document.getElementById('signatureName').value;
+      const signatureDate = document.getElementById('signatureDate').value;
+      const disclaimerText = document.getElementById('disclaimerText').value;
+
       const lines = [];
-      lines.push("Long Arm Quilting Order Form_V1");
-      lines.push("================================");
-      lines.push(`Date Ordered: ${$("dateOrdered").value}`);
-      lines.push(`Customer Name: ${$("customerName").value}`);
-      lines.push(`Phone: ${$("phone").value}`);
-      lines.push(`Email: ${$("email").value}`);
-      lines.push(`Requested Completion Date: ${$("requestedDate").value}`);
-      lines.push("");
-      lines.push("Quilt Top");
-      lines.push(`- Width (in): ${$("width").value}`);
-      lines.push(`- Length (in): ${$("length").value}`);
-      lines.push(`- Pattern: ${$("pattern").value}`);
-      lines.push("");
-      lines.push("Quilting Design");
-      lines.push(`- Edge to Edge: ${$("e2e").options[$("e2e").selectedIndex].text}`);
-      lines.push(`- Custom: ${$("custom").options[$("custom").selectedIndex].text}`);
-      lines.push("");
-      lines.push("Materials");
-      lines.push(`- Batting: ${$("batting").options[$("batting").selectedIndex].text}`);
-      lines.push(`- Thread: ${$("thread").options[$("thread").selectedIndex].text}`);
-      lines.push(`- B&N Supplied Backing Fabric: ${$("backingSupplied").options[$("backingSupplied").selectedIndex].text}`);
-      lines.push(`- Yards of Backing: ${$("backingYards").value}`);
-      lines.push("");
-      lines.push("Label & Stitching");
-      lines.push(`- Embroidered Quilt Label: ${$("label").options[$("label").selectedIndex].text}`);
-      lines.push(`- Minutes for Stitching: ${$("minutes").value}`);
-      if ($("labelNotes").value.trim()) lines.push(`- Notes: ${$("labelNotes").value.trim()}`);
-      lines.push("");
-      const charges = [];
-      if ($("repairs").checked) charges.push("Repairs ($10)");
-      if ($("ironing").checked) charges.push("Ironing ($10)");
-      if ($("trimming").checked) charges.push("Trimming Quilt ($10)");
-      lines.push("Other Charges");
-      lines.push(`- ${charges.length ? charges.join(", ") : "None"}`);
-      lines.push("");
-      lines.push("Estimate");
-      lines.push(`- Square inches: ${$("sqIn").textContent}`);
-      lines.push(`- E2E cost: ${$("e2eCost").textContent}`);
-      lines.push(`- Custom cost: ${$("customCost").textContent}`);
-      lines.push(`- Backing cost: ${$("backingCost").textContent}`);
-      lines.push(`- Batting cost: ${$("battingCost").textContent}`);
-      lines.push(`- Add-ons: ${$("addonsCost").textContent}`);
-      lines.push(`- Estimated total: ${$("totalCost").innerText}`);
-      lines.push("");
-      lines.push("Note: Custom quilting is marked TBD unless priced separately.");
-      return lines.join("\n");
+      lines.push('LONG ARM QUILTING INVOICE FORM');
+      lines.push('========================================');
+      lines.push(`Date Ordered: ${customer.dateOrdered}`);
+      lines.push(`Requested Completion Date: ${customer.requestedDate}`);
+      lines.push(`Customer Name: ${customer.customerName}`);
+      lines.push(`Phone: ${customer.phone}`);
+      lines.push(`Email: ${customer.email}`);
+      if (customer.customerNotes.trim()) lines.push(`Customer Notes: ${customer.customerNotes.trim()}`);
+      lines.push('');
+      lines.push('QUILT LINE ITEMS');
+      lines.push('----------------------------------------');
+
+      let combinedQuiltSubtotal = 0;
+      quiltContainer.querySelectorAll('.quilt-card').forEach((card, index) => {
+        const width = num(card.querySelector('.width').value);
+        const length = num(card.querySelector('.length').value);
+        const squareInches = width * length;
+        const quiltingRate = num(card.querySelector('.quilting-rate').value);
+        const battingRate = num(card.querySelector('.batting-rate').value);
+        const backingRate = num(card.querySelector('.backing-rate').value);
+        const backingYards = num(card.querySelector('.backing-yards').value);
+        const threadUpcharge = num(card.querySelector('.thread-upcharge').value);
+        const labelFee = num(card.querySelector('.label-fee').value);
+        const otherQuiltFee = num(card.querySelector('.other-quilt-fee').value);
+
+        const quiltingTotal = squareInches * quiltingRate;
+        const battingTotal = squareInches * battingRate;
+        const backingTotal = backingRate * backingYards;
+        const extrasTotal = threadUpcharge + labelFee + otherQuiltFee;
+        const subtotal = quiltingTotal + battingTotal + backingTotal + extrasTotal;
+        combinedQuiltSubtotal += subtotal;
+
+        lines.push(`Quilt ${index + 1}: ${card.querySelector('.quilt-name').value || 'Untitled Quilt'}`);
+        lines.push(`  Thread Color: ${card.querySelector('.thread-color').value}`);
+        lines.push(`  Pattern / Design: ${card.querySelector('.pattern-notes').value}`);
+        lines.push(`  Quilting Style: ${card.querySelector('.quilting-style').value}`);
+        lines.push(`  Width x Length: ${width} x ${length} in`);
+        lines.push(`  Square Inches: ${squareInches.toFixed(2)}`);
+        lines.push(`  Quilting Rate: ${quiltingRate.toFixed(4)} per sq in`);
+        lines.push(`  Quilting Total: ${money(quiltingTotal)}`);
+        lines.push(`  Batting Type: ${card.querySelector('.batting-type').value}`);
+        lines.push(`  Batting Rate: ${battingRate.toFixed(4)} per sq in`);
+        lines.push(`  Batting Total: ${money(battingTotal)}`);
+        lines.push(`  Backing Price per Yard: ${money(backingRate)}`);
+        lines.push(`  Backing Yards: ${backingYards.toFixed(1)}`);
+        lines.push(`  Backing Total: ${money(backingTotal)}`);
+        lines.push(`  Thread Type: ${card.querySelector('.thread-type').value}`);
+        lines.push(`  Thread Upcharge: ${money(threadUpcharge)}`);
+        lines.push(`  Label Fee: ${money(labelFee)}`);
+        lines.push(`  Other Quilt Fee: ${money(otherQuiltFee)}`);
+        if (card.querySelector('.backing-pattern').value.trim()) lines.push(`  Backing Notes: ${card.querySelector('.backing-pattern').value.trim()}`);
+        if (card.querySelector('.quilt-notes').value.trim()) lines.push(`  Quilt Notes: ${card.querySelector('.quilt-notes').value.trim()}`);
+        lines.push(`  Line Item Subtotal: ${money(subtotal)}`);
+        lines.push('');
+      });
+
+      const grandTotal = combinedQuiltSubtotal + repairs + ironing + trimming + shipping + otherFee;
+      lines.push('INVOICE TOTALS');
+      lines.push('----------------------------------------');
+      lines.push(`Combined Quilt Subtotal: ${money(combinedQuiltSubtotal)}`);
+      lines.push(`Repairs: ${money(repairs)}`);
+      lines.push(`Ironing: ${money(ironing)}`);
+      lines.push(`Trimming Quilt: ${money(trimming)}`);
+      lines.push(`Shipping: ${money(shipping)}`);
+      lines.push(`${otherFeeLabel}: ${money(otherFee)}`);
+      lines.push(`TOTAL DUE: ${money(grandTotal)}`);
+      lines.push('');
+      lines.push('DISCLAIMER / TERMS');
+      lines.push('----------------------------------------');
+      lines.push(disclaimerText);
+      lines.push('');
+      if (signatureName || signatureDate) {
+        lines.push(`Customer Signature Name: ${signatureName}`);
+        lines.push(`Signature Date: ${signatureDate}`);
+      }
+
+      return lines.join('\n');
     }
 
-    function downloadText(filename, text){
-      const blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+    function downloadText(filename, text) {
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = filename;
       document.body.appendChild(a);
@@ -415,26 +894,45 @@
       URL.revokeObjectURL(url);
     }
 
-    // init
-    defaultDates();
-    calc();
+    function attachGlobalRecalc() {
+      [
+        'repairFee', 'ironingFee', 'trimmingFee', 'shippingFee', 'otherFee', 'otherFeeLabel'
+      ].forEach(id => {
+        document.getElementById(id).addEventListener('input', recalcAll);
+      });
+    }
 
-    inputsToWatch.forEach(el => el.addEventListener("input", calc));
-    form.addEventListener("reset", () => setTimeout(() => { defaultDates(); calc(); }, 0));
+    addQuiltBtn.addEventListener('click', () => addQuilt());
 
-    $("downloadBtn").addEventListener("click", () => {
-      // Validate required fields quickly; if missing, browser will show what’s required.
+    document.getElementById('downloadBtn').addEventListener('click', () => {
       if (!form.reportValidity()) return;
-
-      const text = buildOrderText();
-      const safeName = ($("customerName").value || "order").trim().replace(/[^a-z0-9]+/gi,"_");
-      const filename = `quilting_order_${safeName}.txt`;
+      recalcAll();
+      const text = buildInvoiceText();
+      const safeName = (document.getElementById('customerName').value || 'invoice').trim().replace(/[^a-z0-9]+/gi, '_');
+      const filename = `quilting_invoice_${safeName}.txt`;
       downloadText(filename, text);
-
-      const box = $("statusBox");
-      box.style.display = "block";
-      box.textContent = "Downloaded. If you want customers to submit online (not download), connect this form to a free form backend (see hosting notes).";
+      statusBox.style.display = 'block';
+      statusBox.textContent = 'Invoice downloaded successfully. You can also use Print / Save as PDF for a cleaner customer copy.';
     });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+    form.addEventListener('reset', () => {
+      setTimeout(() => {
+        quiltContainer.innerHTML = '';
+        addQuilt();
+        setTodayDefaults();
+        document.getElementById('disclaimerText').value = 'Prices shown are estimates and may be adjusted after review of the quilt top, materials, requested quilting density, or additional work required. By submitting this order, the customer acknowledges that final pricing and completion timing will be confirmed after review. Please offer feedback on the completed work so I can continue improving my craft.';
+        statusBox.style.display = 'none';
+        recalcAll();
+      }, 0);
+    });
+
+    setTodayDefaults();
+    attachGlobalRecalc();
+    addQuilt();
   </script>
 </body>
 </html>
