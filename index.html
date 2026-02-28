@@ -5,6 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Long Arm Quilting Invoice Form</title>
   <style>
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff !important;
+        color: #111827 !important;
+        box-shadow: none;
+        border-radius: 0;
+        border-bottom: 1px solid #d1d5db;
+        padding: 18px 0 16px;
+      }
+
+      .hero p {
+        color: #374151 !important;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .section {
+        box-shadow: none;
+        border: 1px solid #d1d5db;
+        border-radius: 0;
+        margin-bottom: 14px;
+        page-break-inside: avoid;
+      }
+
+      .btn-row,
+      .status-box,
+      .note-box,
+      .footer-note,
+      .remove-quilt-btn,
+      #addQuiltBtn {
+        display: none !important;
+      }
+
+      input,
+      select,
+      textarea {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+        appearance: none;
+        -webkit-appearance: none;
+        color: #111827;
+      }
+
+      .hint {
+        display: none;
+      }
+
+      .quilt-card,
+      .total-list,
+      .mini-stat,
+      .disclaimer-box {
+        border-radius: 0;
+        box-shadow: none;
+        background: #ffffff;
+      }
+
+      .quilt-summary {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
     :root {
       --bg: #f6f7fb;
       --panel: #ffffff;
@@ -456,7 +525,7 @@
               estimated until you inspect the quilt top and confirm the final invoice.
             </div>
             <div class="btn-row" style="margin-top:16px;">
-              <button type="button" class="primary" id="downloadBtn">Download Invoice (TXT)</button>
+              <button type="button" class="primary" id="downloadBtn">Download Printable Invoice (HTML)</button>
               <button type="button" class="ghost" id="printBtn">Print / Save as PDF</button>
               <button type="reset" class="danger">Reset Form</button>
             </div>
@@ -782,7 +851,22 @@
       document.getElementById('otherLabelSummary').textContent = otherLabel || 'Other charges';
     }
 
-    function buildInvoiceText() {
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function currentDateLabel() {
+      return new Date().toLocaleDateString(undefined, {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
+
+    function buildPrintableInvoiceHtml() {
       const customer = {
         dateOrdered: document.getElementById('dateOrdered').value,
         requestedDate: document.getElementById('requestedDate').value,
@@ -802,20 +886,10 @@
       const signatureDate = document.getElementById('signatureDate').value;
       const disclaimerText = document.getElementById('disclaimerText').value;
 
-      const lines = [];
-      lines.push('LONG ARM QUILTING INVOICE FORM');
-      lines.push('========================================');
-      lines.push(`Date Ordered: ${customer.dateOrdered}`);
-      lines.push(`Requested Completion Date: ${customer.requestedDate}`);
-      lines.push(`Customer Name: ${customer.customerName}`);
-      lines.push(`Phone: ${customer.phone}`);
-      lines.push(`Email: ${customer.email}`);
-      if (customer.customerNotes.trim()) lines.push(`Customer Notes: ${customer.customerNotes.trim()}`);
-      lines.push('');
-      lines.push('QUILT LINE ITEMS');
-      lines.push('----------------------------------------');
-
       let combinedQuiltSubtotal = 0;
+      let quiltRows = '';
+      let quiltDetails = '';
+
       quiltContainer.querySelectorAll('.quilt-card').forEach((card, index) => {
         const width = num(card.querySelector('.width').value);
         const length = num(card.querySelector('.length').value);
@@ -835,55 +909,159 @@
         const subtotal = quiltingTotal + battingTotal + backingTotal + extrasTotal;
         combinedQuiltSubtotal += subtotal;
 
-        lines.push(`Quilt ${index + 1}: ${card.querySelector('.quilt-name').value || 'Untitled Quilt'}`);
-        lines.push(`  Thread Color: ${card.querySelector('.thread-color').value}`);
-        lines.push(`  Pattern / Design: ${card.querySelector('.pattern-notes').value}`);
-        lines.push(`  Quilting Style: ${card.querySelector('.quilting-style').value}`);
-        lines.push(`  Width x Length: ${width} x ${length} in`);
-        lines.push(`  Square Inches: ${squareInches.toFixed(2)}`);
-        lines.push(`  Quilting Rate: ${quiltingRate.toFixed(4)} per sq in`);
-        lines.push(`  Quilting Total: ${money(quiltingTotal)}`);
-        lines.push(`  Batting Type: ${card.querySelector('.batting-type').value}`);
-        lines.push(`  Batting Rate: ${battingRate.toFixed(4)} per sq in`);
-        lines.push(`  Batting Total: ${money(battingTotal)}`);
-        lines.push(`  Backing Price per Yard: ${money(backingRate)}`);
-        lines.push(`  Backing Yards: ${backingYards.toFixed(1)}`);
-        lines.push(`  Backing Total: ${money(backingTotal)}`);
-        lines.push(`  Thread Type: ${card.querySelector('.thread-type').value}`);
-        lines.push(`  Thread Upcharge: ${money(threadUpcharge)}`);
-        lines.push(`  Label Fee: ${money(labelFee)}`);
-        lines.push(`  Other Quilt Fee: ${money(otherQuiltFee)}`);
-        if (card.querySelector('.backing-pattern').value.trim()) lines.push(`  Backing Notes: ${card.querySelector('.backing-pattern').value.trim()}`);
-        if (card.querySelector('.quilt-notes').value.trim()) lines.push(`  Quilt Notes: ${card.querySelector('.quilt-notes').value.trim()}`);
-        lines.push(`  Line Item Subtotal: ${money(subtotal)}`);
-        lines.push('');
+        const quiltName = card.querySelector('.quilt-name').value || `Quilt ${index + 1}`;
+        const threadColor = card.querySelector('.thread-color').value;
+        const patternNotes = card.querySelector('.pattern-notes').value;
+        const quiltingStyle = card.querySelector('.quilting-style').value;
+        const battingType = card.querySelector('.batting-type').value;
+        const threadType = card.querySelector('.thread-type').value;
+        const backingPattern = card.querySelector('.backing-pattern').value;
+        const quiltNotes = card.querySelector('.quilt-notes').value;
+
+        quiltRows += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${escapeHtml(quiltName)}</td>
+            <td>${escapeHtml(quiltingStyle)}</td>
+            <td>${squareInches.toFixed(2)}</td>
+            <td>$${quiltingRate.toFixed(4)}</td>
+            <td>${money(subtotal)}</td>
+          </tr>`;
+
+        quiltDetails += `
+          <section class="quilt-detail">
+            <h3>Quilt ${index + 1}: ${escapeHtml(quiltName)}</h3>
+            <table>
+              <tr><th>Thread Color</th><td>${escapeHtml(threadColor || '-')}</td><th>Pattern / Design</th><td>${escapeHtml(patternNotes || '-')}</td></tr>
+              <tr><th>Quilting Style</th><td>${escapeHtml(quiltingStyle)}</td><th>Dimensions</th><td>${width} × ${length} in</td></tr>
+              <tr><th>Square Inches</th><td>${squareInches.toFixed(2)}</td><th>Quilting Rate</th><td>$${quiltingRate.toFixed(4)} per sq in</td></tr>
+              <tr><th>Quilting Total</th><td>${money(quiltingTotal)}</td><th>Batting Type</th><td>${escapeHtml(battingType)}</td></tr>
+              <tr><th>Batting Rate</th><td>$${battingRate.toFixed(4)} per sq in</td><th>Batting Total</th><td>${money(battingTotal)}</td></tr>
+              <tr><th>Backing Rate</th><td>${money(backingRate)} per yard</td><th>Backing Yards</th><td>${backingYards.toFixed(1)}</td></tr>
+              <tr><th>Backing Total</th><td>${money(backingTotal)}</td><th>Thread Type</th><td>${escapeHtml(threadType)}</td></tr>
+              <tr><th>Thread Upcharge</th><td>${money(threadUpcharge)}</td><th>Label Fee</th><td>${money(labelFee)}</td></tr>
+              <tr><th>Other Quilt Fee</th><td>${money(otherQuiltFee)}</td><th>Line Item Subtotal</th><td><strong>${money(subtotal)}</strong></td></tr>
+              <tr><th>Backing Notes</th><td>${escapeHtml(backingPattern || '-')}</td><th>Quilt Notes</th><td>${escapeHtml(quiltNotes || '-')}</td></tr>
+            </table>
+          </section>`;
       });
 
       const grandTotal = combinedQuiltSubtotal + repairs + ironing + trimming + shipping + otherFee;
-      lines.push('INVOICE TOTALS');
-      lines.push('----------------------------------------');
-      lines.push(`Combined Quilt Subtotal: ${money(combinedQuiltSubtotal)}`);
-      lines.push(`Repairs: ${money(repairs)}`);
-      lines.push(`Ironing: ${money(ironing)}`);
-      lines.push(`Trimming Quilt: ${money(trimming)}`);
-      lines.push(`Shipping: ${money(shipping)}`);
-      lines.push(`${otherFeeLabel}: ${money(otherFee)}`);
-      lines.push(`TOTAL DUE: ${money(grandTotal)}`);
-      lines.push('');
-      lines.push('DISCLAIMER / TERMS');
-      lines.push('----------------------------------------');
-      lines.push(disclaimerText);
-      lines.push('');
-      if (signatureName || signatureDate) {
-        lines.push(`Customer Signature Name: ${signatureName}`);
-        lines.push(`Signature Date: ${signatureDate}`);
-      }
 
-      return lines.join('\n');
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Printable Quilting Invoice</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; color: #111827; margin: 28px; }
+    .header { display: flex; justify-content: space-between; gap: 24px; border-bottom: 2px solid #111827; padding-bottom: 14px; margin-bottom: 20px; }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    h2 { margin: 22px 0 10px; font-size: 18px; }
+    h3 { margin: 18px 0 10px; font-size: 15px; }
+    p { margin: 4px 0; line-height: 1.5; }
+    .meta, .customer { width: 100%; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; width: 22%; }
+    .summary-table th, .summary-table td { text-align: left; }
+    .summary-table td.amount { text-align: right; white-space: nowrap; }
+    .invoice-table td, .invoice-table th { font-size: 14px; }
+    .total-row td { font-weight: 700; font-size: 16px; background: #eef2ff; }
+    .quilt-detail { page-break-inside: avoid; margin-top: 14px; }
+    .disclaimer { border: 1px solid #d1d5db; background: #fafafa; padding: 12px; margin-top: 18px; }
+    .signature { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .line { border-bottom: 1px solid #111827; min-height: 24px; padding-top: 4px; }
+    @media print { body { margin: 16px; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>Long Arm Quilting Invoice</h1>
+      <p>Prepared on ${escapeHtml(currentDateLabel())}</p>
+    </div>
+    <div class="meta">
+      <p><strong>Date Ordered:</strong> ${escapeHtml(customer.dateOrdered)}</p>
+      <p><strong>Requested Completion Date:</strong> ${escapeHtml(customer.requestedDate)}</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="customer">
+      <h2>Customer Information</h2>
+      <p><strong>Name:</strong> ${escapeHtml(customer.customerName)}</p>
+      <p><strong>Phone:</strong> ${escapeHtml(customer.phone)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(customer.email)}</p>
+      <p><strong>Notes:</strong> ${escapeHtml(customer.customerNotes || '-')}</p>
+    </div>
+    <div>
+      <h2>Invoice Overview</h2>
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Quilt</th>
+            <th>Style</th>
+            <th>Sq In</th>
+            <th>Rate</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${quiltRows}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2>Detailed Quilt Line Items</h2>
+  ${quiltDetails}
+
+  <h2>Invoice Totals</h2>
+  <table class="summary-table">
+    <tr><th>Combined Quilt Subtotal</th><td class="amount">${money(combinedQuiltSubtotal)}</td></tr>
+    <tr><th>Repairs</th><td class="amount">${money(repairs)}</td></tr>
+    <tr><th>Ironing</th><td class="amount">${money(ironing)}</td></tr>
+    <tr><th>Trimming Quilt</th><td class="amount">${money(trimming)}</td></tr>
+    <tr><th>Shipping</th><td class="amount">${money(shipping)}</td></tr>
+    <tr><th>${escapeHtml(otherFeeLabel)}</th><td class="amount">${money(otherFee)}</td></tr>
+    <tr class="total-row"><td>Total Due</td><td class="amount">${money(grandTotal)}</td></tr>
+  </table>
+
+  <div class="disclaimer">
+    <strong>Disclaimer / Terms</strong>
+    <p>${escapeHtml(disclaimerText).replace(/
+/g, '<br>')}</p>
+  </div>
+
+  <div class="signature">
+    <div>
+      <strong>Customer Signature Name</strong>
+      <div class="line">${escapeHtml(signatureName || '')}</div>
+    </div>
+    <div>
+      <strong>Signature Date</strong>
+      <div class="line">${escapeHtml(signatureDate || '')}</div>
+    </div>
+  </div>
+</body>
+</html>`;
     }
 
-    function downloadText(filename, text) {
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    function downloadFile(filename, content, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -907,12 +1085,12 @@
     document.getElementById('downloadBtn').addEventListener('click', () => {
       if (!form.reportValidity()) return;
       recalcAll();
-      const text = buildInvoiceText();
+      const html = buildPrintableInvoiceHtml();
       const safeName = (document.getElementById('customerName').value || 'invoice').trim().replace(/[^a-z0-9]+/gi, '_');
-      const filename = `quilting_invoice_${safeName}.txt`;
-      downloadText(filename, text);
+      const filename = `quilting_invoice_${safeName}.html`;
+      downloadFile(filename, html, 'text/html;charset=utf-8');
       statusBox.style.display = 'block';
-      statusBox.textContent = 'Invoice downloaded successfully. You can also use Print / Save as PDF for a cleaner customer copy.';
+      statusBox.textContent = 'Printable invoice downloaded. Open the file in your browser and use Print or Save as PDF for a polished customer copy.';
     });
 
     document.getElementById('printBtn').addEventListener('click', () => {
