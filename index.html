@@ -476,11 +476,7 @@
         </div>
         <div class="field" style="margin-top:14px;">
           <label for="disclaimerText">Disclaimer / Terms</label>
-          <div id="disclaimerText" class="disclaimer-fixed">By signing this form, you confirm that the invoice information is accurate and that you accept the services and charges associated with your quilt(s), including selected patterns, thread, and other products.<br><br>
-Payment is due upon pickup and must be made within 14 days of project completion.<br><br>
-Although Bobbin &amp; Needle strives for excellence in every quilt, minor variations in stitching may occur.<br><br>
-In the unlikely event that your quilt is damaged while in our possession, any resolution will be limited, at our discretion, to the average replacement cost of the fabric used.<br><br>
-Should any additional charges arise, we will notify you and obtain your approval before continuing work.</div>
+          <div id="disclaimerText" class="disclaimer-fixed">By signing this form, you confirm that the invoice information is accurate and that you accept the services and charges associated with your quilt(s), including selected patterns, thread, and other products. Payment is due upon pickup and must be made within 14 days of project completion.<br><br>Although Bobbin &amp; Needle strives for excellence in every quilt, minor variations in stitching may occur. In the unlikely event that your quilt is damaged while in our possession, any resolution will be limited, at our discretion, to the average replacement cost of the fabric used.<br><br>Should any additional charges arise, we will notify you and obtain your approval before continuing work.</div>
         </div>
       </section>
 
@@ -490,7 +486,7 @@ Should any additional charges arise, we will notify you and obtain your approval
           <div>
             <div class="status-box" id="statusBox"></div>
             <div class="disclaimer-box" style="margin-top:14px;">
-              Charges for repairs, ironing, trimming, and similar items are now included inside each quilt’s pricing rather than only at the order level.
+              Business Address: ________________________________
             </div>
             <div class="btn-row" style="margin-top:16px;">
               <button type="button" class="primary" id="downloadBtn">Download Printable Invoice (HTML)</button>
@@ -574,7 +570,7 @@ Should any additional charges arise, we will notify you and obtain your approval
                   <option value="Moderate">Moderate</option>
                   <option value="Heavy">Heavy</option>
                 </select>
-                <div class="hint">This selection is recorded on the invoice. Automatic pricing is based on the edge-to-edge list above.</div>
+                
               </div>
               <div class="field">
                 <label>Time Required</label>
@@ -597,11 +593,11 @@ Should any additional charges arise, we will notify you and obtain your approval
               <div class="field">
                 <label class="required">Batting Type</label>
                 <select class="batting-type">
-                  <option value="Customer Supplied ($0)" data-rate="0">Customer Supplied ($0)</option>
-                  <option value="Poly ($8/yard)" data-rate="8">Poly ($8/yard)</option>
-                  <option value="80/20 ($9/yard)" data-rate="9">80/20 ($9/yard)</option>
-                  <option value="Wool ($10/yard)" data-rate="10">Wool ($10/yard)</option>
-                  <option value="Bamboo ($11/yard)" data-rate="11">Bamboo ($11/yard)</option>
+                  <option value="Customer Provided ($0.000/sq in)" data-rate="0.000">Customer Provided ($0.000/ sq in)</option>
+                  <option value="Poly ($0.003/sq in)" data-rate="0.003">Poly ($0.003/sq in)</option>
+                  <option value="Cotton ($0.005/sq in)" data-rate="0.005">Cotton ($0.005/sq in)</option>
+                  <option value="Bamboo ($0.00675/sq in)" data-rate="0.00675">Bamboo ($0.00675/sq in)</option>
+                  <option value="Wool ($0.00675/sq in)" data-rate="0.00675">Wool ($0.00675/sq in)</option>
                 </select>
               </div>
               <div class="field">
@@ -1036,6 +1032,7 @@ Should any additional charges arise, we will notify you and obtain your approval
       tests.push({ name: 'quilt count summary exists', pass: !!document.getElementById('quiltCount') });
       tests.push({ name: 'quilt card is collapsible', pass: !!document.querySelector('details.quilt-card') });
       tests.push({ name: 'combined material summary exists', pass: !!document.querySelector('.material-total') });
+      tests.push({ name: 'cotton batting option exists', pass: document.documentElement.innerHTML.includes('Cotton ($0.005/sq in)') });
       tests.push({ name: 'thread upcharge field exists', pass: !!document.querySelector('.thread-upcharge') });
       tests.push({ name: 'thread selector exists', pass: !!document.querySelector('.thread-type') });
       tests.push({ name: 'thread upcharge dollar label exists', pass: document.documentElement.innerHTML.includes('Thread upcharge ($)') });
