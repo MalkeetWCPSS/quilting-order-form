@@ -459,13 +459,10 @@
         <h2>Terms and Signature</h2>
         <div class="grid-2" style="margin-top:14px;">
           <div class="field">
-            <label for="minimumAgreed">Minimum Agreed</label>
-            <input id="minimumAgreed" type="text" placeholder="Optional agreed minimum or note" />
-          </div>
-          <div class="field">
             <label for="signatureName">Customer Signature Name</label>
             <input id="signatureName" type="text" placeholder="Type full name to acknowledge terms" />
           </div>
+          <div class="field"></div>
         </div>
         <div class="grid-2" style="margin-top:14px;">
           <div class="field">
@@ -537,7 +534,7 @@
               <div class="field">
                 <label>Square Inches</label>
                 <input type="text" class="square-inches" readonly />
-                <div class="hint">Calculated automatically from width × length.</div>
+                
               </div>
               <div class="field">
                 <label class="required">Pattern</label>
@@ -612,7 +609,7 @@
                 <input type="number" step="0.01" min="0" class="thread-upcharge" value="0" />
               </div>
               <div class="field">
-                <label class="required">B&N Supplied Backing Fabric</label>
+                <label class="required">Fabric Supplied</label>
                 <select class="backing-supplied">
                   <option value="No ($0)" data-rate="0">No ($0)</option>
                   <option value="Regular Price ($10/yd)" data-rate="10">Regular Price ($10/yd)</option>
@@ -848,8 +845,7 @@
         customerName: document.getElementById('customerName').value,
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
-        customerNotes: document.getElementById('customerNotes').value,
-        minimumAgreed: document.getElementById('minimumAgreed').value
+        customerNotes: document.getElementById('customerNotes').value
       };
 
       const signatureName = document.getElementById('signatureName').value;
@@ -897,7 +893,7 @@
               <tr><th>Quilting Design--Custom</th><td>${escapeHtml(custom)}</td><th>Minutes for Stitching</th><td>${escapeHtml(minutes)}</td></tr>
               <tr><th>Batting Type</th><td>${escapeHtml(battingType)}</td><th>Batting Total</th><td>${money(calc.battingTotal)}</td></tr>
               <tr><th>Thread</th><td>${escapeHtml(thread)}</td><th>Thread upcharge</th><td>${money(num(card.querySelector('.thread-upcharge').value))}</td></tr>
-              <tr><th>B&N Supplied Backing Fabric</th><td>${escapeHtml(backing)}</td><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td></tr>
+              <tr><th>Fabric Supplied</th><td>${escapeHtml(backing)}</td><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td></tr>
               <tr><th>Backing Total</th><td>${money(calc.backingTotal)}</td><th>Materials Total</th><td>${money(calc.battingTotal + calc.backingTotal + num(card.querySelector('.thread-upcharge').value))}</td></tr>
               <tr><th>Embroidered Quilt Label</th><td>${escapeHtml(labelNotes || '-')}</td><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} in</td></tr>
               <tr><th>Minimum agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td><th>Repairs / Ironing / Trimming</th><td>${money(calc.repairCharge)} / ${money(calc.ironingCharge)} / ${money(calc.trimmingCharge)}</td></tr>
@@ -955,8 +951,7 @@
       <p><strong>Name:</strong> ${escapeHtml(customer.customerName)}</p>
       <p><strong>Phone:</strong> ${escapeHtml(customer.phone)}</p>
       <p><strong>Email:</strong> ${escapeHtml(customer.email)}</p>
-      <p><strong>Minimum Agreed:</strong> ${escapeHtml(customer.minimumAgreed || '-')}</p>
-      <p><strong>Notes:</strong> ${escapeHtml(customer.customerNotes || '-')}</p>
+            <p><strong>Notes:</strong> ${escapeHtml(customer.customerNotes || '-')}</p>
     </div>
     <div>
       <h2>Invoice Overview</h2>
