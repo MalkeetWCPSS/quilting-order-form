@@ -20,16 +20,13 @@
       --radius-sm: 12px;
       --max: 1180px;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: linear-gradient(180deg, #f8fafc 0%, #f3f4f6 100%);
       color: var(--text);
     }
-
     .hero {
       background: linear-gradient(135deg, #0f172a 0%, #111827 55%, #1f2937 100%);
       color: white;
@@ -38,29 +35,9 @@
       border-bottom-right-radius: 28px;
       box-shadow: var(--shadow);
     }
-
-    .hero-inner, .container {
-      max-width: var(--max);
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.8rem, 2.7vw, 2.8rem);
-      letter-spacing: -0.02em;
-    }
-
-    .hero p {
-      margin: 0;
-      color: rgba(255,255,255,.84);
-      max-width: 820px;
-      line-height: 1.55;
-    }
-
-    .container {
-      padding: 24px 20px 40px;
-    }
-
+    .hero-inner, .container { max-width: var(--max); margin: 0 auto; }
+    .hero h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 2.7vw, 2.8rem); letter-spacing: -0.02em; }
+    .container { padding: 24px 20px 40px; }
     .section {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -69,51 +46,28 @@
       padding: 22px;
       margin-bottom: 18px;
     }
-
-    .section h2 {
-      margin: 0 0 6px;
-      font-size: 1.15rem;
-    }
-
-    .section p.section-note {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .grid-2, .grid-3, .grid-4 {
-      display: grid;
-      gap: 14px;
-    }
-
+    .section h2 { margin: 0 0 6px; font-size: 1.15rem; }
+    .grid-2, .grid-3, .grid-4 { display: grid; gap: 14px; }
     .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
     @media (max-width: 940px) {
       .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-
     @media (max-width: 720px) {
       .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
       .hero { border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; }
       .section { padding: 18px; }
     }
-
     .field label {
       display: block;
       font-size: 0.88rem;
       font-weight: 700;
       margin-bottom: 6px;
     }
-
-    .required::after {
-      content: " *";
-      color: #b91c1c;
-    }
-
-    input, select, textarea {
+    .required::after { content: " *"; color: #b91c1c; }
+    input, select {
       width: 100%;
       border: 1px solid #d7dbe2;
       background: #fff;
@@ -124,24 +78,11 @@
       outline: none;
       transition: border-color .2s ease, box-shadow .2s ease;
     }
-
-    input:focus, select:focus, textarea:focus {
+    input:focus, select:focus {
       border-color: #8b5cf6;
       box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
     }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .hint {
-      margin-top: 6px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
+    .hint { margin-top: 6px; font-size: 0.8rem; color: var(--muted); line-height: 1.45; }
     details.panel {
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -149,11 +90,6 @@
       overflow: hidden;
       margin-bottom: 14px;
     }
-
-    details.panel[open] {
-      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.05);
-    }
-
     details.panel > summary {
       list-style: none;
       cursor: pointer;
@@ -165,9 +101,7 @@
       align-items: center;
       gap: 12px;
     }
-
     details.panel > summary::-webkit-details-marker { display: none; }
-
     .summary-right {
       display: inline-flex;
       align-items: center;
@@ -176,11 +110,7 @@
       font-weight: 700;
       font-size: 0.92rem;
     }
-
-    .panel-body {
-      padding: 18px;
-    }
-
+    .panel-body { padding: 18px; }
     .quilt-card {
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -188,7 +118,6 @@
       margin-bottom: 16px;
       overflow: hidden;
     }
-
     .quilt-top {
       padding: 16px 18px;
       display: flex;
@@ -199,13 +128,7 @@
       background: #fafafa;
       border-bottom: 1px solid var(--line);
     }
-
-    .quilt-title {
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 800;
-    }
-
+    .quilt-title { margin: 0; font-size: 1rem; font-weight: 800; }
     .badge {
       display: inline-flex;
       align-items: center;
@@ -218,33 +141,21 @@
       border: 1px solid #e5e7eb;
       font-weight: 700;
     }
-
-    .quilt-body {
-      padding: 18px;
-    }
-
+    .quilt-body { padding: 18px; }
     .mini-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
       margin-top: 16px;
     }
-
-    @media (max-width: 900px) {
-      .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 560px) {
-      .mini-grid { grid-template-columns: 1fr; }
-    }
-
+    @media (max-width: 900px) { .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .mini-grid { grid-template-columns: 1fr; } }
     .mini-stat {
       border: 1px solid var(--line);
       border-radius: 16px;
       padding: 12px;
       background: #fafafa;
     }
-
     .mini-stat .label {
       font-size: 0.78rem;
       color: var(--muted);
@@ -253,23 +164,14 @@
       text-transform: uppercase;
       letter-spacing: .02em;
     }
-
-    .mini-stat .value {
-      font-size: 1rem;
-      font-weight: 800;
-    }
-
+    .mini-stat .value { font-size: 1rem; font-weight: 800; }
     .checkbox-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
       margin-top: 4px;
     }
-
-    @media (max-width: 720px) {
-      .checkbox-grid { grid-template-columns: 1fr; }
-    }
-
+    @media (max-width: 720px) { .checkbox-grid { grid-template-columns: 1fr; } }
     .check-card {
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -279,19 +181,8 @@
       gap: 10px;
       align-items: center;
     }
-
-    .check-card input[type="checkbox"] {
-      width: auto;
-      margin: 0;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
+    .check-card input[type="checkbox"] { width: auto; margin: 0; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
     button {
       border: 0;
       border-radius: 14px;
@@ -299,34 +190,19 @@
       font-size: 0.95rem;
       font-weight: 800;
       cursor: pointer;
-      transition: transform .08s ease, opacity .2s ease;
     }
-
-    button:hover { opacity: .96; }
-    button:active { transform: translateY(1px); }
-
     .primary { background: linear-gradient(135deg, #111827, #312e81); color: white; }
     .secondary { background: #eef2ff; color: #312e81; border: 1px solid #c7d2fe; }
     .ghost { background: #f9fafb; color: #111827; border: 1px solid #d1d5db; }
     .danger { background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3; }
-
-    .totals-layout {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 18px;
-    }
-
-    @media (max-width: 900px) {
-      .totals-layout { grid-template-columns: 1fr; }
-    }
-
+    .totals-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; }
+    @media (max-width: 900px) { .totals-layout { grid-template-columns: 1fr; } }
     .status-box, .disclaimer-box {
       border-radius: 16px;
       padding: 14px 16px;
       line-height: 1.55;
       font-size: 0.93rem;
     }
-
     .status-box {
       background: var(--success);
       border: 1px solid var(--success-border);
@@ -334,20 +210,28 @@
       display: none;
       margin-bottom: 14px;
     }
-
     .disclaimer-box {
       background: #f8fafc;
       border: 1px solid #dbe4f0;
       color: #334155;
     }
-
+    .disclaimer-fixed {
+      width: 100%;
+      border: 1px solid #d7dbe2;
+      background: #f9fafb;
+      border-radius: var(--radius-sm);
+      padding: 12px 13px;
+      font-size: 0.96rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .address-block strong { display: block; margin-bottom: 4px; }
     .total-list {
       border: 1px solid var(--line);
       border-radius: 18px;
       background: #fcfcfd;
       overflow: hidden;
     }
-
     .total-row {
       display: flex;
       justify-content: space-between;
@@ -356,58 +240,15 @@
       border-bottom: 1px solid var(--line);
       font-size: 0.95rem;
     }
-
     .total-row:last-child { border-bottom: 0; }
     .grand { background: #f3f0ff; }
     .inline-money { font-variant-numeric: tabular-nums; white-space: nowrap; }
-
-    @media print {
-      body { background: #ffffff; }
-      .hero {
-        background: #ffffff !important;
-        color: #111827 !important;
-        box-shadow: none;
-        border-radius: 0;
-        border-bottom: 1px solid #d1d5db;
-        padding: 18px 0 16px;
-      }
-      .hero p { color: #374151 !important; }
-      .container { max-width: 100%; padding: 0; }
-      .section {
-        box-shadow: none;
-        border: 1px solid #d1d5db;
-        border-radius: 0;
-        margin-bottom: 14px;
-        page-break-inside: avoid;
-      }
-      .btn-row, .status-box, .remove-quilt-btn, #addQuiltBtn {
-        display: none !important;
-      }
-      details.panel { border-radius: 0; box-shadow: none; }
-      details.panel > summary { background: #ffffff; }
-      input, select, textarea {
-        border: 0;
-        padding: 0;
-        background: transparent;
-        box-shadow: none;
-        appearance: none;
-        -webkit-appearance: none;
-        color: #111827;
-      }
-      .hint { display: none; }
-      .quilt-card, .total-list, .mini-stat, .disclaimer-box {
-        border-radius: 0;
-        box-shadow: none;
-        background: #ffffff;
-      }
-    }
   </style>
 </head>
 <body>
   <header class="hero">
     <div class="hero-inner">
       <h1>Long Arm Quilting Order Form</h1>
-      
     </div>
   </header>
 
@@ -415,7 +256,6 @@
     <form id="invoiceForm">
       <section class="section">
         <h2>Customer Information</h2>
-        
         <div class="grid-4">
           <div class="field">
             <label class="required" for="dateOrdered">Date Ordered</label>
@@ -448,7 +288,6 @@
 
       <section class="section">
         <h2>Quilt Items</h2>
-        
         <div id="quiltContainer"></div>
         <div class="btn-row">
           <button type="button" class="secondary" id="addQuiltBtn">+ Add Another Quilt</button>
@@ -457,6 +296,10 @@
 
       <section class="section">
         <h2>Terms and Signature</h2>
+        <div class="field" style="margin-top:14px;">
+          <label>Disclaimer / Terms</label>
+          <div id="disclaimerText" class="disclaimer-fixed">By signing this form, you confirm that the invoice information is accurate and that you accept the services and charges associated with your quilt(s), including selected patterns, thread, and other products. Payment is due upon pickup and must be made within 14 days of project completion.<br><br>Although Bobbin &amp; Needle strives for excellence in every quilt, minor variations in stitching may occur. In the unlikely event that your quilt is damaged while in our possession, any resolution will be limited, at our discretion, to the average replacement cost of the fabric used.<br><br>Should any additional charges arise, we will notify you and obtain your approval before continuing work.</div>
+        </div>
         <div class="grid-2" style="margin-top:14px;">
           <div class="field">
             <label for="signatureName">Customer Signature Name</label>
@@ -471,10 +314,6 @@
           </div>
           <div class="field"></div>
         </div>
-        <div class="field" style="margin-top:14px;">
-          <label for="disclaimerText">Disclaimer / Terms</label>
-          <div id="disclaimerText" class="disclaimer-fixed">By signing this form, you confirm that the invoice information is accurate and that you accept the services and charges associated with your quilt(s), including selected patterns, thread, and other products. Payment is due upon pickup and must be made within 14 days of project completion.<br><br>Although Bobbin &amp; Needle strives for excellence in every quilt, minor variations in stitching may occur. In the unlikely event that your quilt is damaged while in our possession, any resolution will be limited, at our discretion, to the average replacement cost of the fabric used.<br><br>Should any additional charges arise, we will notify you and obtain your approval before continuing work.</div>
-        </div>
       </section>
 
       <section class="section">
@@ -482,8 +321,12 @@
         <div class="totals-layout">
           <div>
             <div class="status-box" id="statusBox"></div>
-            <div class="disclaimer-box" style="margin-top:14px;">
-              Business Address: ________________________________
+            <div class="disclaimer-box address-block" style="margin-top:14px;">
+              <strong>Business Address</strong>
+              Bobbin &amp; Needle<br>
+              14530 N.E. North Valley Road<br>
+              Newberg, Oregon 97132<br>
+              Phone: 503-277-3454
             </div>
             <div class="btn-row" style="margin-top:16px;">
               <button type="button" class="primary" id="downloadBtn">Download Printable Invoice (HTML)</button>
@@ -534,7 +377,6 @@
               <div class="field">
                 <label>Square Inches</label>
                 <input type="text" class="square-inches" readonly />
-                
               </div>
               <div class="field">
                 <label class="required">Pattern</label>
@@ -567,7 +409,6 @@
                   <option value="Moderate">Moderate</option>
                   <option value="Heavy">Heavy</option>
                 </select>
-                
               </div>
               <div class="field">
                 <label>Time Required</label>
@@ -586,7 +427,7 @@
             <span class="summary-right"><span class="inline-money materials-total-badge">$0.00</span></span>
           </summary>
           <div class="panel-body">
-            <div class="grid-4">
+            <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:14px;">
               <div class="field">
                 <label class="required">Batting Type</label>
                 <select class="batting-type">
@@ -608,6 +449,8 @@
                 <label>Thread upcharge ($)</label>
                 <input type="number" step="0.01" min="0" class="thread-upcharge" value="0" />
               </div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:14px; margin-top:14px;">
               <div class="field">
                 <label class="required">Fabric Supplied</label>
                 <select class="backing-supplied">
@@ -616,15 +459,14 @@
                   <option value="Friend's Discount ($7/yd)" data-rate="7">Friend's Discount ($7/yd)</option>
                 </select>
               </div>
-            </div>
-            <div class="grid-4" style="margin-top:14px;">
+              <div class="field">
+                <label>Fabric Choice</label>
+                <input type="text" class="fabric-choice" placeholder="Customer fabric choice" />
+              </div>
               <div class="field">
                 <label class="required">Yards of Backing</label>
                 <input type="number" step="0.1" min="0" class="backing-yards" value="0" />
               </div>
-              <div class="field"></div>
-              <div class="field"></div>
-              <div class="field"></div>
             </div>
           </div>
         </details>
@@ -775,7 +617,7 @@
       const threadUpcharge = num(card.querySelector('.thread-upcharge').value);
 
       const quiltingTotal = squareInches * e2eRate;
-      const battingTotal = battingRate * backingYards;
+      const battingTotal = squareInches * battingRate * 1.10;
       const backingTotal = backingRate * backingYards;
       const materialsTotal = battingTotal + backingTotal + threadUpcharge;
       const quiltExtrasTotal = repairCharge + ironingCharge + trimmingCharge;
@@ -801,7 +643,9 @@
         quiltExtrasTotal,
         repairCharge,
         ironingCharge,
-        trimmingCharge
+        trimmingCharge,
+        materialsTotal,
+        threadUpcharge
       };
     }
 
@@ -868,6 +712,7 @@
         const battingType = card.querySelector('.batting-type').value;
         const thread = card.querySelector('.thread-type').value;
         const backing = card.querySelector('.backing-supplied').value;
+        const fabricChoice = card.querySelector('.fabric-choice').value;
         const backingYards = card.querySelector('.backing-yards').value;
         const labelNotes = card.querySelector('.label-notes').value;
         const minutes = card.querySelector('.minutes-stitching').value;
@@ -890,15 +735,15 @@
             <table>
               <tr><th>Width x Length</th><td>${width} × ${length} in</td><th>Square Inches</th><td>${calc.squareInches.toFixed(2)}</td></tr>
               <tr><th>Pattern</th><td>${escapeHtml(pattern || '-')}</td><th>Quilting Design--Edge to Edge</th><td>${escapeHtml(e2e)}</td></tr>
-              <tr><th>Quilting Design--Custom</th><td>${escapeHtml(custom)}</td><th>Minutes for Stitching</th><td>${escapeHtml(minutes)}</td></tr>
+              <tr><th>Quilting Design--Custom</th><td>${escapeHtml(custom)}</td><th>Time Required</th><td>${escapeHtml(minutes)}</td></tr>
               <tr><th>Batting Type</th><td>${escapeHtml(battingType)}</td><th>Batting Total</th><td>${money(calc.battingTotal)}</td></tr>
-              <tr><th>Thread</th><td>${escapeHtml(thread)}</td><th>Thread upcharge</th><td>${money(num(card.querySelector('.thread-upcharge').value))}</td></tr>
-              <tr><th>Fabric Supplied</th><td>${escapeHtml(backing)}</td><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td></tr>
-              <tr><th>Backing Total</th><td>${money(calc.backingTotal)}</td><th>Materials Total</th><td>${money(calc.battingTotal + calc.backingTotal + num(card.querySelector('.thread-upcharge').value))}</td></tr>
-              <tr><th>Embroidered Quilt Label</th><td>${escapeHtml(labelNotes || '-')}</td><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} in</td></tr>
-              <tr><th>Minimum agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td><th>Repairs / Ironing / Trimming</th><td>${money(calc.repairCharge)} / ${money(calc.ironingCharge)} / ${money(calc.trimmingCharge)}</td></tr>
-              <tr><th>Quilting Total</th><td>${money(calc.quiltingTotal)}</td><th>Extras Total</th><td>${money(calc.quiltExtrasTotal)}</td></tr>
-              <tr><th>Line Item Subtotal</th><td><strong>${money(calc.subtotal)}</strong></td><th></th><td></td></tr>
+              <tr><th>Thread</th><td>${escapeHtml(thread)}</td><th>Thread upcharge</th><td>${money(calc.threadUpcharge)}</td></tr>
+              <tr><th>Fabric Supplied</th><td>${escapeHtml(backing)}</td><th>Fabric Choice</th><td>${escapeHtml(fabricChoice || '-')}</td></tr>
+              <tr><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td><th>Backing Total</th><td>${money(calc.backingTotal)}</td></tr>
+              <tr><th>Materials Total</th><td>${money(calc.materialsTotal)}</td><th>Embroidered Quilt Label</th><td>${escapeHtml(labelNotes || '-')}</td></tr>
+              <tr><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} in</td><th>Minimum agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td></tr>
+              <tr><th>Repairs / Ironing / Trimming</th><td>${money(calc.repairCharge)} / ${money(calc.ironingCharge)} / ${money(calc.trimmingCharge)}</td><th>Extras Total</th><td>${money(calc.quiltExtrasTotal)}</td></tr>
+              <tr><th>Labor Total</th><td>${money(calc.quiltingTotal)}</td><th>Line Item Subtotal</th><td><strong>${money(calc.subtotal)}</strong></td></tr>
             </table>
           </section>`;
       });
@@ -930,18 +775,19 @@
     .disclaimer { border: 1px solid #d1d5db; background: #fafafa; padding: 12px; margin-top: 18px; }
     .signature { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .line { border-bottom: 1px solid #111827; min-height: 24px; padding-top: 4px; }
-    @media print { body { margin: 16px; } }
   </style>
 </head>
 <body>
   <div class="header">
     <div>
-      <h1>Long Arm Quilting Invoice</h1>
+      <h1>Bobbin &amp; Needle</h1>
+      <p>14530 N.E. North Valley Road<br>Newberg, Oregon 97132<br>Phone: 503-277-3454</p>
+      <p><strong>Long Arm Quilting Invoice</strong></p>
       <p>Prepared on ${escapeHtml(currentDateLabel())}</p>
     </div>
     <div class="meta">
       <p><strong>Date Ordered:</strong> ${escapeHtml(customer.dateOrdered)}</p>
-      <p><strong>Requested Completion Date:</strong> ${escapeHtml(customer.requestedDate)}</p>
+      <p><strong>Estimated Completion Date:</strong> ${escapeHtml(customer.requestedDate)}</p>
     </div>
   </div>
 
@@ -951,7 +797,7 @@
       <p><strong>Name:</strong> ${escapeHtml(customer.customerName)}</p>
       <p><strong>Phone:</strong> ${escapeHtml(customer.phone)}</p>
       <p><strong>Email:</strong> ${escapeHtml(customer.email)}</p>
-            <p><strong>Notes:</strong> ${escapeHtml(customer.customerNotes || '-')}</p>
+      <p><strong>Notes:</strong> ${escapeHtml(customer.customerNotes || '-')}</p>
     </div>
     <div>
       <h2>Invoice Overview</h2>
@@ -1014,33 +860,7 @@
       URL.revokeObjectURL(url);
     }
 
-    function runSelfTests() {
-      const tests = [];
-      tests.push({ name: 'escapeHtml escapes angle brackets', pass: escapeHtml('<b>Test</b>') === '&lt;b&gt;Test&lt;/b&gt;' });
-      tests.push({ name: 'formatMultilineText converts newlines to br', pass: formatMultilineText('Line 1\nLine 2') === 'Line 1<br>Line 2' });
-      tests.push({ name: 'money formats zero as USD', pass: typeof money(0) === 'string' && money(0).includes('0') });
-      tests.push({ name: 'customer name input exists', pass: !!document.getElementById('customerName') });
-      tests.push({ name: 'pattern field exists', pass: !!document.querySelector('.pattern') });
-      tests.push({ name: 'e2e selector exists', pass: !!document.querySelector('.e2e-design') });
-      tests.push({ name: 'repair checkbox exists', pass: !!document.querySelector('.charge-repair') });
-      tests.push({ name: 'fixed disclaimer exists', pass: !!document.querySelector('.disclaimer-fixed') });
-      tests.push({ name: 'quilt count summary exists', pass: !!document.getElementById('quiltCount') });
-      tests.push({ name: 'quilt card is collapsible', pass: !!document.querySelector('details.quilt-card') });
-      tests.push({ name: 'combined material summary exists', pass: !!document.querySelector('.material-total') });
-      tests.push({ name: 'cotton batting option exists', pass: document.documentElement.innerHTML.includes('Cotton ($0.005/sq in)') });
-      tests.push({ name: 'thread upcharge field exists', pass: !!document.querySelector('.thread-upcharge') });
-      tests.push({ name: 'thread selector exists', pass: !!document.querySelector('.thread-type') });
-      tests.push({ name: 'thread upcharge dollar label exists', pass: document.documentElement.innerHTML.includes('Thread upcharge ($)') });
-      const failed = tests.filter((test) => !test.pass);
-      if (failed.length) {
-        console.error('Self-tests failed:', failed);
-      } else {
-        console.info('All self-tests passed.');
-      }
-    }
-
     addQuiltBtn.addEventListener('click', () => addQuilt());
-
     document.getElementById('downloadBtn').addEventListener('click', () => {
       if (!form.reportValidity()) return;
       recalcAll();
@@ -1051,17 +871,12 @@
       statusBox.style.display = 'block';
       statusBox.textContent = 'Printable invoice downloaded. Open the file in your browser and use Print or Save as PDF.';
     });
-
-    document.getElementById('printBtn').addEventListener('click', () => {
-      window.print();
-    });
-
+    document.getElementById('printBtn').addEventListener('click', () => { window.print(); });
     form.addEventListener('reset', () => {
       setTimeout(() => {
         quiltContainer.innerHTML = '';
         addQuilt();
         setTodayDefaults();
-        document.getElementById('disclaimerText').value = 'Final pricing and completion timing may be confirmed after review of the quilt top, materials, and requested quilting details.';
         statusBox.style.display = 'none';
         recalcAll();
       }, 0);
@@ -1071,7 +886,6 @@
     document.getElementById('customerName').addEventListener('input', syncCustomerNameToSignature);
     addQuilt();
     recalcAll();
-    runSelfTests();
   </script>
 </body>
 </html>
