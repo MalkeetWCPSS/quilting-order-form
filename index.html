@@ -3,64 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Long Arm Quilting Order Form</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <title>Quilting Order Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .logo { width: 100%; max-width: 200px; }
+        .checkbox { margin-bottom: 15px; }
+        .checkbox label { display: block; margin: 5px 0; }
+        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 10px; }
+    </style>
 </head>
 <body>
-    <header>
-        <img src="BN_logo.png" alt="BN Logo">
-        <h1>Long Arm Quilting Order Form</h1>
-    </header>
-    <form id="order-form">
-        <fieldset>
-            <legend>Customer Information</legend>
-            <label for="customer-name">Name:</label>
-            <input type="text" id="customer-name" required>
-            <label for="customer-email">Email:</label>
-            <input type="email" id="customer-email" required>
-        </fieldset>
-        <fieldset>
-            <legend>Quilt Items</legend>
-            <label for="quilt-type">Select Quilt Type:</label>
-            <select id="quilt-type">
-                <option value="twin">Twin</option>
-                <option value="queen">Queen</option>
-                <option value="king">King</option>
-            </select>
-            <label for="num-quilts">Number of Quilts:</label>
-            <input type="number" id="num-quilts" min="1" value="1">
-        </fieldset>
-        <fieldset>
-            <legend>Service Charges</legend>
-            <label for="service-charge">Service Charge:</label>
-            <input type="number" id="service-charge" value="50" readonly>
-        </fieldset>
-        <fieldset>
-            <legend>Materials</legend>
-            <label for="material-cost">Material Cost:</label>
-            <input type="number" id="material-cost" value="100" required>
-        </fieldset>
-        <fieldset>
-            <legend>Disclaimer</legend>
-            <p>Please note that all orders require a non-refundable deposit of 50%.</p>
-        </fieldset>
-        <fieldset>
-            <legend>Order Summary</legend>
-            <p>Total: <span id="total">0</span></p>
-            <button type="button" id="calculate">Calculate</button>
-            <button type="submit">Submit Order</button>
-            <button type="button" onclick="window.print();">Print Order</button>
-        </fieldset>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA..." alt="Logo" class="logo">
+    <h1>Quilting Order Form</h1>
+    <form>
+        <div class="checkbox">
+            <label><input type="checkbox" name="serviceCharges" value="charge1"> Service Charge 1</label>
+            <label><input type="checkbox" name="serviceCharges" value="charge2"> Service Charge 2</label>
+        </div>
+        <button type="button" onclick="calculateTotal()">Calculate Total</button>
     </form>
+    <p id="totalDisplay">Total: $0.00</p>
     <script>
-        document.getElementById('calculate').onclick = function() {
-            const serviceCharge = document.getElementById('service-charge').value;
-            const materialCost = document.getElementById('material-cost').value;
-            const numQuilts = document.getElementById('num-quilts').value;
-            const total = (parseFloat(serviceCharge) + parseFloat(materialCost)) * numQuilts;
-            document.getElementById('total').innerText = total.toFixed(2);
-        };
+        function calculateTotal() {
+            let total = 0;
+            const checkboxes = document.querySelectorAll('input[name="serviceCharges"]:checked');
+            checkboxes.forEach((checkbox) => {
+                total += parseFloat(checkbox.value === 'charge1' ? 10 : 20); // Example values
+            });
+            document.getElementById('totalDisplay').innerText = `Total: $${total.toFixed(2)}`;
+        }
     </script>
+    <footer>
+        <p>Disclaimer: This is a sample disclaimer text that explains the terms and conditions of the quilting order. Please read carefully before proceeding with your order.</p>
+    </footer>
 </body>
 </html>
