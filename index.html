@@ -5,29 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Long Arm Quilting Order Form</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <header>
         <img src="BN_logo.png" alt="BN Logo">
         <h1>Long Arm Quilting Order Form</h1>
     </header>
-    <form action="submit_order.php" method="POST">
-        <label for="customerName">Customer Name:</label>
-        <input type="text" id="customerName" name="customerName" required>
-
-        <label for="quiltSize">Quilt Size:</label>
-        <input type="text" id="quiltSize" name="quiltSize" required>
-
+    <form id="order-form">
+        <fieldset>
+            <legend>Customer Information</legend>
+            <label for="customer-name">Name:</label>
+            <input type="text" id="customer-name" required>
+            <label for="customer-email">Email:</label>
+            <input type="email" id="customer-email" required>
+        </fieldset>
+        <fieldset>
+            <legend>Quilt Items</legend>
+            <label for="quilt-type">Select Quilt Type:</label>
+            <select id="quilt-type">
+                <option value="twin">Twin</option>
+                <option value="queen">Queen</option>
+                <option value="king">King</option>
+            </select>
+            <label for="num-quilts">Number of Quilts:</label>
+            <input type="number" id="num-quilts" min="1" value="1">
+        </fieldset>
         <fieldset>
             <legend>Service Charges</legend>
-            <label><input type="checkbox" name="serviceCharge" value="basic"> Basic Service</label><br>
-            <label><input type="checkbox" name="serviceCharge" value="premium"> Premium Service</label>
+            <label for="service-charge">Service Charge:</label>
+            <input type="number" id="service-charge" value="50" readonly>
         </fieldset>
-
-        <input type="submit" value="Submit Order">
+        <fieldset>
+            <legend>Materials</legend>
+            <label for="material-cost">Material Cost:</label>
+            <input type="number" id="material-cost" value="100" required>
+        </fieldset>
+        <fieldset>
+            <legend>Disclaimer</legend>
+            <p>Please note that all orders require a non-refundable deposit of 50%.</p>
+        </fieldset>
+        <fieldset>
+            <legend>Order Summary</legend>
+            <p>Total: <span id="total">0</span></p>
+            <button type="button" id="calculate">Calculate</button>
+            <button type="submit">Submit Order</button>
+            <button type="button" onclick="window.print();">Print Order</button>
+        </fieldset>
     </form>
-    <footer>
-        <p>This is a complete disclaimer text regarding the Long Arm Quilting Service. Please read it carefully before placing your order.</p>
-    </footer>
+    <script>
+        document.getElementById('calculate').onclick = function() {
+            const serviceCharge = document.getElementById('service-charge').value;
+            const materialCost = document.getElementById('material-cost').value;
+            const numQuilts = document.getElementById('num-quilts').value;
+            const total = (parseFloat(serviceCharge) + parseFloat(materialCost)) * numQuilts;
+            document.getElementById('total').innerText = total.toFixed(2);
+        };
+    </script>
 </body>
 </html>
