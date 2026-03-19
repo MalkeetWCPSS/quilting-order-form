@@ -1,0 +1,27 @@
+.quilting-order-form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.quilting-order-form input,
+.quilting-order-form select,
+.quilting-order-form textarea {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.quilting-order-form button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quilting-order-form button:hover {
+    background-color: #45a049;
+}
