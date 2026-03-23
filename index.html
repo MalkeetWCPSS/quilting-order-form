@@ -102,16 +102,18 @@
       font-size: 0.9rem;
       line-height: 1.5;
     }
-    .grid-2, .grid-3, .grid-4 { display: grid; gap: 14px; }
+    .grid-2, .grid-3, .grid-4, .grid-5 { display: grid; gap: 14px; }
     .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
     @media (max-width: 940px) {
+      .grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 720px) {
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
       .hero { border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; }
       .section { padding: 18px; }
     }
@@ -175,10 +177,11 @@
     .summary-right {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       color: #374151;
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
     }
     .panel-body { padding: 18px; }
     .quilt-card {
@@ -203,49 +206,64 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       background: #f3f4f6;
       color: #374151;
       border: 1px solid #e5e7eb;
       font-weight: 700;
+      white-space: nowrap;
     }
     .choice-chip {
       display: inline-flex;
       align-items: center;
-      padding: 7px 11px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid #dbe4f0;
       background: #f8fafc;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       color: #334155;
+      white-space: nowrap;
+    }
+    .quilt-name-chip {
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .quilt-body { padding: 18px; }
     .mini-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
       margin-top: 16px;
     }
-    @media (max-width: 900px) { .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 1100px) { .mini-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 700px) { .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 560px) { .mini-grid { grid-template-columns: 1fr; } }
     .mini-stat {
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 12px;
+      padding: 10px;
       background: #fafafa;
+      min-width: 0;
     }
     .mini-stat .label {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: var(--muted);
       margin-bottom: 6px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .02em;
     }
-    .mini-stat .value { font-size: 1rem; font-weight: 800; }
+    .mini-stat .value {
+      font-size: 0.94rem;
+      font-weight: 800;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .checkbox-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -471,6 +489,7 @@
           <p class="quilt-title">Quilt <span class="quilt-number"></span></p>
         </div>
         <div class="summary-right">
+          <span class="choice-chip quilt-name-chip">Quilt Name: —</span>
           <span class="choice-chip labor-mode-chip">Labor method: None</span>
           <span class="badge">Quilt Total: <span class="inline-money quilt-line-subtotal">$0.00</span></span>
           <button type="button" class="ghost remove-quilt-btn">Remove</button>
@@ -483,13 +502,17 @@
             <span>Quilt Top Details</span>
           </summary>
           <div class="panel-body">
-            <div class="grid-4">
+            <div class="grid-5">
               <div class="field">
-                <label class="required">Width of Quilt Top (inches)</label>
+                <label>Name of Quilt</label>
+                <input type="text" class="quilt-name" placeholder="Optional quilt name" />
+              </div>
+              <div class="field">
+                <label class="required">Width of Quilt Top (inc)</label>
                 <input type="number" step="0.01" min="0" class="width" required />
               </div>
               <div class="field">
-                <label class="required">Length of Quilt Top (inches)</label>
+                <label class="required">Length of Quilt Top (inc)</label>
                 <input type="number" step="0.01" min="0" class="length" required />
               </div>
               <div class="field">
@@ -497,8 +520,8 @@
                 <input type="text" class="pattern" required />
               </div>
               <div class="field">
-                <label>Square Inches</label>
-                <input type="number" step="0.01" min="0" class="square-inches" readonly />
+                <label>Square Inc</label>
+                <input type="number" step="0.01" min="0" class="square-inc" readonly />
               </div>
             </div>
           </div>
@@ -518,17 +541,10 @@
                   <option value="Regular Stitch Density ($0.02/sq in)" data-rate="0.02" selected>Regular Stitch Density ($0.02/sq in)</option>
                   <option value="Complex Stitch Density ($0.03/sq in)" data-rate="0.03">Complex Stitch Density ($0.03/sq in)</option>
                 </select>
-                <div class="hint">Use this for standard all-over quilting. This method charges by square inch.</div>
               </div>
               <div class="field">
-                <label class="required">Custom Quilting</label>
-                <select class="custom-design">
-                  <option value="None" data-hourly="0">None</option>
-                  <option value="Regular Custom ($35/hr)" data-hourly="35">Regular Custom ($35/hr)</option>
-                  <option value="Moderate Custom ($45/hr)" data-hourly="45">Moderate Custom ($45/hr)</option>
-                  <option value="Heavy Custom ($60/hr)" data-hourly="60">Heavy Custom ($60/hr)</option>
-                </select>
-                <div class="hint">Use this for ruler work, block-specific designs, or denser custom work. This method charges by time.</div>
+                <label>Custom Quilting Amount ($)</label>
+                <input type="number" step="0.01" min="0" class="custom-amount" value="" placeholder="Enter custom quilting amount" />
               </div>
               <div class="field">
                 <label class="required">Time Required</label>
@@ -615,13 +631,9 @@
             <span>Notes</span>
           </summary>
           <div class="panel-body">
-            <div class="grid-4">
+            <div class="grid-3">
               <div class="field">
-                <label>Embroidered Quilt Label</label>
-                <input type="text" class="label-notes" placeholder="Optional label details" />
-              </div>
-              <div class="field">
-                <label>Minimum Outside Border After Trimming (inches)</label>
+                <label>Minimum Outside Border After Trimming (inc)</label>
                 <input type="number" step="0.25" min="0" class="minimum-border" value="0" />
               </div>
               <div class="field">
@@ -637,6 +649,10 @@
         </details>
 
         <div class="mini-grid">
+          <div class="mini-stat">
+            <div class="label">Quilt Name</div>
+            <div class="value quilt-name-text">—</div>
+          </div>
           <div class="mini-stat">
             <div class="label">Labor Method</div>
             <div class="value labor-mode-text">Edge-to-Edge</div>
@@ -741,22 +757,20 @@
 
     function enforceLaborMode(card, source) {
       const e2eSelect = card.querySelector('.e2e-design');
-      const customSelect = card.querySelector('.custom-design');
+      const customAmountInput = card.querySelector('.custom-amount');
       const minutesSelect = card.querySelector('.minutes-stitching');
       const manualInput = card.querySelector('.manual-minutes');
+      const customAmount = num(customAmountInput.value);
 
-      if (source === 'custom' && customSelect.value !== 'None') {
+      if (source === 'custom' && customAmount > 0) {
         e2eSelect.value = 'None ($0)';
-        if (minutesSelect.value === '0') minutesSelect.value = '60';
       }
 
       if (source === 'e2e' && selectedNumber(e2eSelect, 'data-rate') > 0) {
-        customSelect.value = 'None';
-        minutesSelect.value = '0';
-        manualInput.value = '';
+        customAmountInput.value = '';
       }
 
-      if (customSelect.value === 'None' && selectedNumber(e2eSelect, 'data-rate') === 0) {
+      if (customAmount === 0 && selectedNumber(e2eSelect, 'data-rate') === 0) {
         minutesSelect.value = '0';
         manualInput.value = '';
       }
@@ -785,11 +799,16 @@
         recalcAll();
       });
 
-      const customSelect = card.querySelector('.custom-design');
+      const customAmountInput = card.querySelector('.custom-amount');
       const e2eSelect = card.querySelector('.e2e-design');
       const minutesSelect = card.querySelector('.minutes-stitching');
 
-      customSelect.addEventListener('change', () => {
+      customAmountInput.addEventListener('input', () => {
+        enforceLaborMode(card, 'custom');
+        recalcAll();
+      });
+
+      customAmountInput.addEventListener('change', () => {
         enforceLaborMode(card, 'custom');
         recalcAll();
       });
@@ -827,17 +846,18 @@
     }
 
     function calculateCard(card) {
+      const quiltName = card.querySelector('.quilt-name').value.trim();
       const width = num(card.querySelector('.width').value);
       const length = num(card.querySelector('.length').value);
       const squareInches = width * length;
 
       const e2eSelect = card.querySelector('.e2e-design');
-      const customSelect = card.querySelector('.custom-design');
+      const customAmountInput = card.querySelector('.custom-amount');
       const battingSelect = card.querySelector('.batting-type');
       const backingSelect = card.querySelector('.backing-supplied');
 
       const e2eRate = selectedNumber(e2eSelect, 'data-rate');
-      const customHourlyRate = selectedNumber(customSelect, 'data-hourly');
+      const customAmount = num(customAmountInput.value);
       const customMinutes = getCustomMinutes(card);
       const battingRate = selectedNumber(battingSelect, 'data-rate');
       const backingRate = selectedNumber(backingSelect, 'data-rate');
@@ -851,9 +871,9 @@
       let laborMode = 'None';
       let laborBase = 0;
 
-      if (customSelect.value !== 'None' && customHourlyRate > 0) {
+      if (customAmount > 0) {
         laborMode = 'Custom';
-        laborBase = customHourlyRate * (customMinutes / 60);
+        laborBase = customAmount;
       } else if (e2eRate > 0) {
         laborMode = 'Edge-to-Edge';
         laborBase = squareInches * e2eRate;
@@ -868,17 +888,20 @@
       const quiltSubtotal = quiltingTotal + materialsTotal;
       const subtotal = quiltSubtotal;
 
-      card.querySelector('.square-inches').value = squareInches ? squareInches.toFixed(2) : '';
+      card.querySelector('.square-inc').value = squareInches ? squareInches.toFixed(2) : '';
       card.querySelector('.quilting-total').textContent = money(quiltingTotal);
       card.querySelector('.material-total').textContent = money(materialsTotal);
       card.querySelector('.quilt-subtotal-total').textContent = money(subtotal);
       card.querySelector('.quilt-line-subtotal').textContent = money(subtotal);
       card.querySelector('.quilting-total-badge').textContent = money(quiltingTotal);
       card.querySelector('.materials-total-badge').textContent = money(materialsTotal);
+      card.querySelector('.quilt-name-chip').textContent = `Quilt Name: ${quiltName || '—'}`;
+      card.querySelector('.quilt-name-text').textContent = quiltName || '—';
       card.querySelector('.labor-mode-chip').textContent = `Labor method: ${laborMode}`;
       card.querySelector('.labor-mode-text').textContent = laborMode;
 
       return {
+        quiltName,
         subtotal,
         quiltSubtotal,
         squareInches,
@@ -886,7 +909,7 @@
         laborBase,
         laborMode,
         customMinutes,
-        customHourlyRate,
+        customAmount,
         e2eRate,
         battingTotal,
         backingTotal,
@@ -947,17 +970,20 @@
         combinedLaborSubtotal += calc.quiltingTotal;
         combinedMaterialSubtotal += calc.materialsTotal;
 
+        const quiltName = card.querySelector('.quilt-name').value;
         const width = num(card.querySelector('.width').value);
         const length = num(card.querySelector('.length').value);
         const pattern = card.querySelector('.pattern').value;
         const e2e = selectedText(card.querySelector('.e2e-design'));
-        const custom = selectedText(card.querySelector('.custom-design'));
+        const customAmountEntered = num(card.querySelector('.custom-amount').value);
+        const timeRequired = card.querySelector('.minutes-stitching').value === 'manual'
+          ? `${num(card.querySelector('.manual-minutes').value)} minutes`
+          : selectedText(card.querySelector('.minutes-stitching'));
         const battingType = selectedText(card.querySelector('.batting-type'));
         const thread = selectedText(card.querySelector('.thread-type'));
         const backing = selectedText(card.querySelector('.backing-supplied'));
         const fabricChoice = card.querySelector('.fabric-choice').value;
         const backingYards = card.querySelector('.backing-yards').value;
-        const labelNotes = card.querySelector('.label-notes').value;
         const minimumBorder = card.querySelector('.minimum-border').value;
         const lineMinimumAgreed = card.querySelector('.minimum-agreed-line').value;
         const additionalNotes = card.querySelector('.additional-notes').value;
@@ -965,7 +991,7 @@
         quiltRows += `
           <tr>
             <td>${index + 1}</td>
-            <td>${escapeHtml(pattern || `Quilt ${index + 1}`)}</td>
+            <td>${escapeHtml(quiltName || pattern || `Quilt ${index + 1}`)}</td>
             <td>${escapeHtml(calc.laborMode)}</td>
             <td>${calc.squareInches.toFixed(2)}</td>
             <td>${money(calc.quiltingTotal)}</td>
@@ -975,21 +1001,21 @@
 
         quiltDetails += `
           <section class="quilt-detail">
-            <h3>Quilt ${index + 1}: ${escapeHtml(pattern || `Quilt ${index + 1}`)}</h3>
+            <h3>Quilt ${index + 1}: ${escapeHtml(quiltName || pattern || `Quilt ${index + 1}`)}</h3>
             <table>
-              <tr><th>Width × Length</th><td>${width} × ${length} in</td><th>Square Inches</th><td>${calc.squareInches.toFixed(2)}</td></tr>
+              <tr><th>Quilt Name</th><td>${escapeHtml(quiltName || '-')}</td><th>Pattern</th><td>${escapeHtml(pattern || '-')}</td></tr>
+              <tr><th>Width × Length</th><td>${width} × ${length} inc</td><th>Square Inc</th><td>${calc.squareInches.toFixed(2)}</td></tr>
               <tr><th>Labor Method</th><td>${escapeHtml(calc.laborMode)}</td><th>Labor Base</th><td>${money(calc.laborBase)}</td></tr>
-              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Selection</th><td>${escapeHtml(custom)}</td></tr>
-              <tr><th>Custom Minutes</th><td>${escapeHtml(String(calc.customMinutes || 0))}</td><th>Custom Hourly Rate</th><td>${money(calc.customHourlyRate)}</td></tr>
+              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Quilting Amount</th><td>${money(customAmountEntered)}</td></tr>
+              <tr><th>Time Required</th><td>${escapeHtml(timeRequired || 'None')}</td><th>Service Charges</th><td>${money(calc.serviceCharges)}</td></tr>
               <tr><th>Repairs</th><td>${money(calc.repairCharge)}</td><th>Ironing</th><td>${money(calc.ironingCharge)}</td></tr>
               <tr><th>Trimming</th><td>${money(calc.trimmingCharge)}</td><th>Labor Total</th><td>${money(calc.quiltingTotal)}</td></tr>
               <tr><th>Batting Type</th><td>${escapeHtml(battingType)}</td><th>Batting Total</th><td>${money(calc.battingTotal)}</td></tr>
               <tr><th>Thread</th><td>${escapeHtml(thread)}</td><th>Thread Upcharge</th><td>${money(calc.threadUpcharge)}</td></tr>
               <tr><th>Backing Supplied</th><td>${escapeHtml(backing)}</td><th>Fabric Choice</th><td>${escapeHtml(fabricChoice || '-')}</td></tr>
               <tr><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td><th>Backing Total</th><td>${money(calc.backingTotal)}</td></tr>
-              <tr><th>Materials Total</th><td>${money(calc.materialsTotal)}</td><th>Embroidered Quilt Label</th><td>${escapeHtml(labelNotes || '-')}</td></tr>
-              <tr><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} in</td><th>Minimum Agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td></tr>
-              <tr><th>Additional Notes</th><td colspan="3">${escapeHtml(additionalNotes || '-')}</td></tr>
+              <tr><th>Materials Total</th><td>${money(calc.materialsTotal)}</td><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} inc</td></tr>
+              <tr><th>Minimum Agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td><th>Additional Notes</th><td>${escapeHtml(additionalNotes || '-')}</td></tr>
               <tr><th>Quilt Total (Labor + Materials)</th><td colspan="3"><strong>${money(calc.subtotal)}</strong></td></tr>
             </table>
           </section>`;
@@ -1059,7 +1085,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Pattern</th>
+            <th>Quilt Name</th>
             <th>Labor Method</th>
             <th>Sq In</th>
             <th>Labor</th>
