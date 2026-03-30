@@ -235,7 +235,7 @@
     .quilt-body { padding: 18px; }
     .mini-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
       margin-top: 16px;
     }
@@ -539,28 +539,12 @@
                 <select class="e2e-design">
                   <option value="None ($0)" data-rate="0">None ($0)</option>
                   <option value="Regular Stitch Density ($0.02/sq in)" data-rate="0.02" selected>Regular Stitch Density ($0.02/sq in)</option>
-                  <option value="Complex Stitch Density ($0.03/sq in)" data-rate="0.03">Complex Stitch Density ($0.03/sq in)</option>
+                  <option value="Custom" data-rate="-1">Custom</option>
                 </select>
               </div>
-              <div class="field">
-                <label>Custom Quilting Amount ($)</label>
-                <input type="number" step="0.01" min="0" class="custom-amount" value="" placeholder="Enter custom quilting amount" />
-              </div>
-              <div class="field">
-                <label class="required">Time Required</label>
-                <select class="minutes-stitching">
-                  <option value="0">None</option>
-                  <option value="30">30 minutes</option>
-                  <option value="45">45 minutes</option>
-                  <option value="60">1 hour</option>
-                  <option value="90">1.5 hours</option>
-                  <option value="120">2 hours</option>
-                  <option value="150">2.5 hours</option>
-                  <option value="180">3 hours</option>
-                  <option value="240">4 hours</option>
-                  <option value="manual">Other (enter minutes)</option>
-                </select>
-                <input type="number" step="1" min="0" class="manual-minutes hidden" placeholder="Enter minutes for custom quilting" style="margin-top:10px;" />
+              <div class="field custom-amount-wrap" style="display:none;">
+                <label>Custom Amount ($)</label>
+                <input type="number" step="0.01" min="0" class="custom-amount" value="" placeholder="Enter custom amount" />
               </div>
             </div>
 
@@ -650,10 +634,6 @@
 
         <div class="mini-grid">
           <div class="mini-stat">
-            <div class="label">Quilt Name</div>
-            <div class="value quilt-name-text">—</div>
-          </div>
-          <div class="mini-stat">
             <div class="label">Labor Method</div>
             <div class="value labor-mode-text">Edge-to-Edge</div>
           </div>
@@ -736,48 +716,6 @@
       return escapeHtml(text).replace(/\r\n|\r|\n/g, '<br>');
     }
 
-    function getCustomMinutes(card) {
-      const minutesSelect = card.querySelector('.minutes-stitching');
-      const manualInput = card.querySelector('.manual-minutes');
-      if (minutesSelect.value === 'manual') {
-        return num(manualInput.value);
-      }
-      return num(minutesSelect.value);
-    }
-
-    function updateMinutesVisibility(card) {
-      const minutesSelect = card.querySelector('.minutes-stitching');
-      const manualInput = card.querySelector('.manual-minutes');
-      if (minutesSelect.value === 'manual') {
-        manualInput.classList.remove('hidden');
-      } else {
-        manualInput.classList.add('hidden');
-      }
-    }
-
-    function enforceLaborMode(card, source) {
-      const e2eSelect = card.querySelector('.e2e-design');
-      const customAmountInput = card.querySelector('.custom-amount');
-      const minutesSelect = card.querySelector('.minutes-stitching');
-      const manualInput = card.querySelector('.manual-minutes');
-      const customAmount = num(customAmountInput.value);
-
-      if (source === 'custom' && customAmount > 0) {
-        e2eSelect.value = 'None ($0)';
-      }
-
-      if (source === 'e2e' && selectedNumber(e2eSelect, 'data-rate') > 0) {
-        customAmountInput.value = '';
-      }
-
-      if (customAmount === 0 && selectedNumber(e2eSelect, 'data-rate') === 0) {
-        minutesSelect.value = '0';
-        manualInput.value = '';
-      }
-
-      updateMinutesVisibility(card);
-    }
-
     function addQuilt() {
       const fragment = quiltTemplate.content.cloneNode(true);
       const card = fragment.querySelector('.quilt-card');
@@ -800,28 +738,22 @@
       });
 
       const customAmountInput = card.querySelector('.custom-amount');
+      const customAmountWrap = card.querySelector('.custom-amount-wrap');
       const e2eSelect = card.querySelector('.e2e-design');
-      const minutesSelect = card.querySelector('.minutes-stitching');
 
-      customAmountInput.addEventListener('input', () => {
-        enforceLaborMode(card, 'custom');
+      function syncCustomAmountVisibility() {
+        const isCustom = e2eSelect.value === 'Custom';
+        customAmountWrap.style.display = isCustom ? 'block' : 'none';
+        if (!isCustom) {
+          customAmountInput.value = '';
+        }
         recalcAll();
-      });
+      }
 
-      customAmountInput.addEventListener('change', () => {
-        enforceLaborMode(card, 'custom');
-        recalcAll();
-      });
-
-      e2eSelect.addEventListener('change', () => {
-        enforceLaborMode(card, 'e2e');
-        recalcAll();
-      });
-
-      minutesSelect.addEventListener('change', () => {
-        updateMinutesVisibility(card);
-        recalcAll();
-      });
+      e2eSelect.addEventListener('change', syncCustomAmountVisibility);
+      customAmountInput.addEventListener('input', recalcAll);
+      customAmountInput.addEventListener('change', recalcAll);
+      syncCustomAmountVisibility();
 
       card.querySelector('.remove-quilt-btn').addEventListener('click', (event) => {
         event.preventDefault();
@@ -858,7 +790,6 @@
 
       const e2eRate = selectedNumber(e2eSelect, 'data-rate');
       const customAmount = num(customAmountInput.value);
-      const customMinutes = getCustomMinutes(card);
       const battingRate = selectedNumber(battingSelect, 'data-rate');
       const backingRate = selectedNumber(backingSelect, 'data-rate');
       const backingYards = num(card.querySelector('.backing-yards').value);
@@ -871,7 +802,7 @@
       let laborMode = 'None';
       let laborBase = 0;
 
-      if (customAmount > 0) {
+      if (e2eSelect.value === 'Custom') {
         laborMode = 'Custom';
         laborBase = customAmount;
       } else if (e2eRate > 0) {
@@ -896,7 +827,6 @@
       card.querySelector('.quilting-total-badge').textContent = money(quiltingTotal);
       card.querySelector('.materials-total-badge').textContent = money(materialsTotal);
       card.querySelector('.quilt-name-chip').textContent = `Quilt Name: ${quiltName || '—'}`;
-      card.querySelector('.quilt-name-text').textContent = quiltName || '—';
       card.querySelector('.labor-mode-chip').textContent = `Labor method: ${laborMode}`;
       card.querySelector('.labor-mode-text').textContent = laborMode;
 
@@ -908,7 +838,6 @@
         quiltingTotal,
         laborBase,
         laborMode,
-        customMinutes,
         customAmount,
         e2eRate,
         battingTotal,
@@ -976,9 +905,6 @@
         const pattern = card.querySelector('.pattern').value;
         const e2e = selectedText(card.querySelector('.e2e-design'));
         const customAmountEntered = num(card.querySelector('.custom-amount').value);
-        const timeRequired = card.querySelector('.minutes-stitching').value === 'manual'
-          ? `${num(card.querySelector('.manual-minutes').value)} minutes`
-          : selectedText(card.querySelector('.minutes-stitching'));
         const battingType = selectedText(card.querySelector('.batting-type'));
         const thread = selectedText(card.querySelector('.thread-type'));
         const backing = selectedText(card.querySelector('.backing-supplied'));
@@ -1006,10 +932,10 @@
               <tr><th>Quilt Name</th><td>${escapeHtml(quiltName || '-')}</td><th>Pattern</th><td>${escapeHtml(pattern || '-')}</td></tr>
               <tr><th>Width × Length</th><td>${width} × ${length} inc</td><th>Square Inc</th><td>${calc.squareInches.toFixed(2)}</td></tr>
               <tr><th>Labor Method</th><td>${escapeHtml(calc.laborMode)}</td><th>Labor Base</th><td>${money(calc.laborBase)}</td></tr>
-              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Quilting Amount</th><td>${money(customAmountEntered)}</td></tr>
-              <tr><th>Time Required</th><td>${escapeHtml(timeRequired || 'None')}</td><th>Service Charges</th><td>${money(calc.serviceCharges)}</td></tr>
+              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Amount</th><td>${e2e === 'Custom' ? money(customAmountEntered) : '-'}</td></tr>
+              <tr><th>Service Charges</th><td>${money(calc.serviceCharges)}</td><th>Labor Total</th><td>${money(calc.quiltingTotal)}</td></tr>
               <tr><th>Repairs</th><td>${money(calc.repairCharge)}</td><th>Ironing</th><td>${money(calc.ironingCharge)}</td></tr>
-              <tr><th>Trimming</th><td>${money(calc.trimmingCharge)}</td><th>Labor Total</th><td>${money(calc.quiltingTotal)}</td></tr>
+              <tr><th>Trimming</th><td>${money(calc.trimmingCharge)}</td><th></th><td></td></tr>
               <tr><th>Batting Type</th><td>${escapeHtml(battingType)}</td><th>Batting Total</th><td>${money(calc.battingTotal)}</td></tr>
               <tr><th>Thread</th><td>${escapeHtml(thread)}</td><th>Thread Upcharge</th><td>${money(calc.threadUpcharge)}</td></tr>
               <tr><th>Backing Supplied</th><td>${escapeHtml(backing)}</td><th>Fabric Choice</th><td>${escapeHtml(fabricChoice || '-')}</td></tr>
