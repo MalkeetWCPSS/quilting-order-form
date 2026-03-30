@@ -291,6 +291,7 @@
       white-space: nowrap;
       font-weight: 700;
       color: #111827;
+      margin-left: 8px;
     }
     .check-price {
       white-space: nowrap;
@@ -614,10 +615,13 @@
               <div class="field">
                 <label class="required">Backing Fabric Supplied</label>
                 <select class="backing-supplied">
-                  <option value="No ($0)" data-rate="0">No ($0)</option>
-                  <option value="Regular Price ($10/yd)" data-rate="10">Regular Price ($10/yd)</option>
-                  <option value="Friend's Discount ($7/yd)" data-rate="7">Friend's Discount ($7/yd)</option>
+                  <option value="No ($0)" data-rate="0" selected>No ($0)</option>
+                  <option value="Custom" data-rate="-1">Custom</option>
                 </select>
+              </div>
+              <div class="field backing-rate-wrap" style="display:none;">
+                <label>Custom Backing ($ / yd)</label>
+                <input type="number" step="0.01" min="0" class="backing-rate" value="" placeholder="Enter backing rate per yd" />
               </div>
               <div class="field">
                 <label>Fabric Choice</label>
@@ -776,6 +780,24 @@
       customAmountInput.addEventListener('change', recalcAll);
       syncCustomAmountVisibility();
 
+      const backingSelect = card.querySelector('.backing-supplied');
+      const backingRateWrap = card.querySelector('.backing-rate-wrap');
+      const backingRateInput = card.querySelector('.backing-rate');
+
+      function syncBackingRateVisibility() {
+        const isCustomBacking = backingSelect.value === 'Custom';
+        backingRateWrap.style.display = isCustomBacking ? 'block' : 'none';
+        if (!isCustomBacking) {
+          backingRateInput.value = '';
+        }
+        recalcAll();
+      }
+
+      backingSelect.addEventListener('change', syncBackingRateVisibility);
+      backingRateInput.addEventListener('input', recalcAll);
+      backingRateInput.addEventListener('change', recalcAll);
+      syncBackingRateVisibility();
+
       card.querySelector('.remove-quilt-btn').addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -807,12 +829,14 @@
       const e2eSelect = card.querySelector('.e2e-design');
       const customAmountInput = card.querySelector('.custom-amount');
       const battingSelect = card.querySelector('.batting-type');
-      const backingSelect = card.querySelector('.backing-supplied');
 
       const e2eRate = selectedNumber(e2eSelect, 'data-rate');
       const customRate = num(customAmountInput.value);
       const battingRate = selectedNumber(battingSelect, 'data-rate');
-      const backingRate = selectedNumber(backingSelect, 'data-rate');
+      const backingSelect = card.querySelector('.backing-supplied');
+      const backingChoiceRate = selectedNumber(backingSelect, 'data-rate');
+      const backingEnteredRate = num(card.querySelector('.backing-rate')?.value);
+      const backingRate = backingChoiceRate === -1 ? backingEnteredRate : backingChoiceRate;
       const backingYards = num(card.querySelector('.backing-yards').value);
 
       const repairCharge = card.querySelector('.charge-repair').checked ? 10 : 0;
@@ -929,6 +953,7 @@
         const battingType = selectedText(card.querySelector('.batting-type'));
         const thread = selectedText(card.querySelector('.thread-type'));
         const backing = selectedText(card.querySelector('.backing-supplied'));
+        const backingRateEntered = num(card.querySelector('.backing-rate')?.value);
         const fabricChoice = card.querySelector('.fabric-choice').value;
         const backingYards = card.querySelector('.backing-yards').value;
         const minimumBorder = card.querySelector('.minimum-border').value;
@@ -959,10 +984,11 @@
               <tr><th>Trimming</th><td>${money(calc.trimmingCharge)}</td><th></th><td></td></tr>
               <tr><th>Batting Type</th><td>${escapeHtml(battingType)}</td><th>Batting Total</th><td>${money(calc.battingTotal)}</td></tr>
               <tr><th>Thread</th><td>${escapeHtml(thread)}</td><th>Thread Upcharge</th><td>${money(calc.threadUpcharge)}</td></tr>
-              <tr><th>Backing Supplied</th><td>${escapeHtml(backing)}</td><th>Fabric Choice</th><td>${escapeHtml(fabricChoice || '-')}</td></tr>
-              <tr><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td><th>Backing Total</th><td>${money(calc.backingTotal)}</td></tr>
-              <tr><th>Materials Total</th><td>${money(calc.materialsTotal)}</td><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} inc</td></tr>
-              <tr><th>Minimum Agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td><th>Additional Notes</th><td>${escapeHtml(additionalNotes || '-')}</td></tr>
+              <tr><th>Backing Fabric Supplied</th><td>${escapeHtml(backing)}</td><th>Fabric Choice</th><td>${escapeHtml(fabricChoice || '-')}</td></tr>
+              <tr><th>Custom Backing Rate</th><td>${backing === 'Custom' ? money(backingRateEntered) + '/yd' : '-'}</td><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td></tr>
+              <tr><th>Backing Total</th><td>${money(calc.backingTotal)}</td><th>Materials Total</th><td>${money(calc.materialsTotal)}</td></tr>
+              <tr><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} inc</td><th>Minimum Agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td></tr>
+              <tr><th>Additional Notes</th><td colspan="3">${escapeHtml(additionalNotes || '-')}</td></tr>
               <tr><th>Quilt Total (Labor + Materials)</th><td colspan="3"><strong>${money(calc.subtotal)}</strong></td></tr>
             </table>
           </section>`;
