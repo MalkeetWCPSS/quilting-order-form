@@ -371,6 +371,27 @@
       body { background: white; }
       .section { box-shadow: none; }
     }
+  
+    @media (max-width: 1024px) {
+      .quilt-top {
+        align-items: flex-start;
+        row-gap: 10px;
+      }
+      .summary-right {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      .mini-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .badge,
+      .mini-stat,
+      .total-row {
+        overflow-wrap: anywhere;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -538,12 +559,12 @@
                 <label class="required">Edge-to-Edge Quilting</label>
                 <select class="e2e-design">
                   <option value="None ($0)" data-rate="0">None ($0)</option>
-                  <option value="Regular Stitch Density ($0.02/sq in)" data-rate="0.02" selected>Regular Stitch Density ($0.02/sq in)</option>
+                  <option value="Regular Stitch Density ($0.025/sq in)" data-rate="0.025" selected>Regular Stitch Density ($0.025/sq in)</option>
                   <option value="Custom" data-rate="-1">Custom</option>
                 </select>
               </div>
               <div class="field custom-amount-wrap" style="display:none;">
-                <label>Custom Rate ($/sq inc)</label>
+                <label>Custom Rate ($/sq in)</label>
                 <input type="number" step="0.001" min="0" class="custom-amount" value="" placeholder="Enter custom rate, e.g. 0.025" />
               </div>
             </div>
@@ -932,7 +953,7 @@
               <tr><th>Quilt Name</th><td>${escapeHtml(quiltName || '-')}</td><th>Pattern</th><td>${escapeHtml(pattern || '-')}</td></tr>
               <tr><th>Width × Length</th><td>${width} × ${length} inc</td><th>Square Inc</th><td>${calc.squareInches.toFixed(2)}</td></tr>
               <tr><th>Labor Method</th><td>${escapeHtml(calc.laborMode)}</td><th>Labor Base</th><td>${money(calc.laborBase)}</td></tr>
-              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Rate</th><td>${e2e === 'Custom' ? `${customRateEntered.toFixed(3)}/sq inc` : '-'}</td></tr>
+              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Rate</th><td>${e2e === 'Custom' ? `${customRateEntered.toFixed(3)}/sq in` : '-'}</td></tr>
               <tr><th>Service Charges</th><td>${money(calc.serviceCharges)}</td><th>Labor Total</th><td>${money(calc.quiltingTotal)}</td></tr>
               <tr><th>Repairs</th><td>${money(calc.repairCharge)}</td><th>Ironing</th><td>${money(calc.ironingCharge)}</td></tr>
               <tr><th>Trimming</th><td>${money(calc.trimmingCharge)}</td><th></th><td></td></tr>
