@@ -543,8 +543,8 @@
                 </select>
               </div>
               <div class="field custom-amount-wrap" style="display:none;">
-                <label>Custom Amount ($)</label>
-                <input type="number" step="0.01" min="0" class="custom-amount" value="" placeholder="Enter custom amount" />
+                <label>Custom Rate ($/sq inc)</label>
+                <input type="number" step="0.001" min="0" class="custom-amount" value="" placeholder="Enter custom rate, e.g. 0.025" />
               </div>
             </div>
 
@@ -789,7 +789,7 @@
       const backingSelect = card.querySelector('.backing-supplied');
 
       const e2eRate = selectedNumber(e2eSelect, 'data-rate');
-      const customAmount = num(customAmountInput.value);
+      const customRate = num(customAmountInput.value);
       const battingRate = selectedNumber(battingSelect, 'data-rate');
       const backingRate = selectedNumber(backingSelect, 'data-rate');
       const backingYards = num(card.querySelector('.backing-yards').value);
@@ -804,7 +804,7 @@
 
       if (e2eSelect.value === 'Custom') {
         laborMode = 'Custom';
-        laborBase = customAmount;
+        laborBase = squareInches * customRate;
       } else if (e2eRate > 0) {
         laborMode = 'Edge-to-Edge';
         laborBase = squareInches * e2eRate;
@@ -904,7 +904,7 @@
         const length = num(card.querySelector('.length').value);
         const pattern = card.querySelector('.pattern').value;
         const e2e = selectedText(card.querySelector('.e2e-design'));
-        const customAmountEntered = num(card.querySelector('.custom-amount').value);
+        const customRateEntered = num(card.querySelector('.custom-amount').value);
         const battingType = selectedText(card.querySelector('.batting-type'));
         const thread = selectedText(card.querySelector('.thread-type'));
         const backing = selectedText(card.querySelector('.backing-supplied'));
@@ -932,7 +932,7 @@
               <tr><th>Quilt Name</th><td>${escapeHtml(quiltName || '-')}</td><th>Pattern</th><td>${escapeHtml(pattern || '-')}</td></tr>
               <tr><th>Width × Length</th><td>${width} × ${length} inc</td><th>Square Inc</th><td>${calc.squareInches.toFixed(2)}</td></tr>
               <tr><th>Labor Method</th><td>${escapeHtml(calc.laborMode)}</td><th>Labor Base</th><td>${money(calc.laborBase)}</td></tr>
-              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Amount</th><td>${e2e === 'Custom' ? money(customAmountEntered) : '-'}</td></tr>
+              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Rate</th><td>${e2e === 'Custom' ? `${customRateEntered.toFixed(3)}/sq inc` : '-'}</td></tr>
               <tr><th>Service Charges</th><td>${money(calc.serviceCharges)}</td><th>Labor Total</th><td>${money(calc.quiltingTotal)}</td></tr>
               <tr><th>Repairs</th><td>${money(calc.repairCharge)}</td><th>Ironing</th><td>${money(calc.ironingCharge)}</td></tr>
               <tr><th>Trimming</th><td>${money(calc.trimmingCharge)}</td><th></th><td></td></tr>
