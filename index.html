@@ -371,6 +371,12 @@
       #downloadBtn, #printBtn, button[type="reset"], .btn-row, #addQuiltBtn, .remove-quilt-btn { display: none !important; }
       body { background: white; }
       .section { box-shadow: none; }
+      .hint, .status-box { display: none !important; }
+      input::placeholder, textarea::placeholder { color: transparent !important; }
+      input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: transparent !important; }
+      input::-moz-placeholder, textarea::-moz-placeholder { color: transparent !important; opacity: 0 !important; }
+      input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: transparent !important; }
+      input::-ms-input-placeholder, textarea::-ms-input-placeholder { color: transparent !important; }
     }
   
     @media (max-width: 1024px) {
@@ -976,20 +982,20 @@
           <section class="quilt-detail">
             <h3>Quilt ${index + 1}: ${escapeHtml(quiltName || pattern || `Quilt ${index + 1}`)}</h3>
             <table>
-              <tr><th>Quilt Name</th><td>${escapeHtml(quiltName || '-')}</td><th>Pattern</th><td>${escapeHtml(pattern || '-')}</td></tr>
+              <tr><th>Quilt Name</th><td>${escapeHtml(quiltName || '')}</td><th>Pattern</th><td>${escapeHtml(pattern || '-')}</td></tr>
               <tr><th>Width × Length</th><td>${width} × ${length} inc</td><th>Square Inc</th><td>${calc.squareInches.toFixed(2)}</td></tr>
               <tr><th>Labor Method</th><td>${escapeHtml(calc.laborMode)}</td><th>Labor Base</th><td>${money(calc.laborBase)}</td></tr>
-              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Rate</th><td>${e2e === 'Custom' ? `${customRateEntered.toFixed(3)}/sq in` : '-'}</td></tr>
+              <tr><th>Edge-to-Edge Selection</th><td>${escapeHtml(e2e)}</td><th>Custom Rate</th><td>${e2e === 'Custom' && customRateEntered ? `${customRateEntered.toFixed(3)}/sq in` : ''}</td></tr>
               <tr><th>Service Charges</th><td>${money(calc.serviceCharges)}</td><th>Labor Total</th><td>${money(calc.quiltingTotal)}</td></tr>
               <tr><th>Repairs</th><td>${money(calc.repairCharge)}</td><th>Ironing</th><td>${money(calc.ironingCharge)}</td></tr>
               <tr><th>Trimming</th><td>${money(calc.trimmingCharge)}</td><th></th><td></td></tr>
               <tr><th>Batting Type</th><td>${escapeHtml(battingType)}</td><th>Batting Total</th><td>${money(calc.battingTotal)}</td></tr>
               <tr><th>Thread</th><td>${escapeHtml(thread)}</td><th>Thread Upcharge</th><td>${money(calc.threadUpcharge)}</td></tr>
-              <tr><th>Backing Fabric Supplied</th><td>${escapeHtml(backing)}</td><th>Fabric Choice</th><td>${escapeHtml(fabricChoice || '-')}</td></tr>
-              <tr><th>Custom Backing Rate</th><td>${backing === 'Custom' ? money(backingRateEntered) + '/yd' : '-'}</td><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td></tr>
+              <tr><th>Backing Fabric Supplied</th><td>${escapeHtml(backing)}</td><th>Fabric Choice</th><td>${escapeHtml(fabricChoice || '')}</td></tr>
+              <tr><th>Custom Backing Rate</th><td>${backing === 'Custom' && backingRateEntered ? money(backingRateEntered) + '/yd' : ''}</td><th>Yards of Backing</th><td>${escapeHtml(backingYards)}</td></tr>
               <tr><th>Backing Total</th><td>${money(calc.backingTotal)}</td><th>Materials Total</th><td>${money(calc.materialsTotal)}</td></tr>
-              <tr><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} inc</td><th>Minimum Agreed</th><td>${escapeHtml(lineMinimumAgreed || '-')}</td></tr>
-              <tr><th>Additional Notes</th><td colspan="3">${escapeHtml(additionalNotes || '-')}</td></tr>
+              <tr><th>Minimum Outside Border</th><td>${escapeHtml(minimumBorder || '0')} inc</td><th>Minimum Agreed</th><td>${escapeHtml(lineMinimumAgreed || '')}</td></tr>
+              <tr><th>Additional Notes</th><td colspan="3">${escapeHtml(additionalNotes || '')}</td></tr>
               <tr><th>Quilt Total (Labor + Materials)</th><td colspan="3"><strong>${money(calc.subtotal)}</strong></td></tr>
             </table>
           </section>`;
@@ -1051,7 +1057,7 @@
       <p><strong>Name:</strong> ${escapeHtml(customer.customerName)}</p>
       <p><strong>Phone:</strong> ${escapeHtml(customer.phone)}</p>
       <p><strong>Email:</strong> ${escapeHtml(customer.email)}</p>
-      <p><strong>Notes:</strong> ${escapeHtml(customer.customerNotes || '-')}</p>
+      <p><strong>Notes:</strong> ${escapeHtml(customer.customerNotes || '')}</p>
     </div>
     <div>
       <h2>Invoice Overview</h2>
